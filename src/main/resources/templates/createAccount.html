@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Create Account</title>
+</head>
+<body>
+<h2>Create Account</h2>
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+<form action="/register" method="post" onsubmit="return validateForm()">
+    <label for="email">Email (Max 60 characters):</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="username">Username (Max 20 characters):</label><br>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="personalId">Personal ID (Max 20 characters):</label><br>
+    <input type="text" id="personalId" name="personalId" required><br><br>
+
+    <label for="password">Password (Max 20 characters):</label><br>
+    <div style="position: relative;">
+        <input type="password" id="password" name="password" required>
+        <button type="button" id="passwordVisibility" onclick="togglePasswordVisibility()">Show</button>
+    </div><br>
+
+    <label for="re-password">Repeat Password:</label><br>
+    <div style="position: relative;">
+        <input type="password" id="re-password" name="re-password" required>
+        <button type="button" id="re-passwordVisibility" onclick="toggleRePasswordVisibility()">Show</button>
+    </div><br>
+
+    <label for="phone">Phone (optional - Max 11 characters):</label><br>
+    <input type="text" id="phone" name="phone"><br><br>
+
+    <input type="submit" value="Create Account">
+</form>
+<br>
+<p>Already have an account?</p>
+<button onclick="window.location.href='/loginPage'">Login</button>
+<button onclick="window.location.href='/'">Home</button>
+<script th:inline="javascript">
+    function validateForm() {
+        var password = document.getElementById('password').value;
+        var repassword = document.getElementById('re-password').value;
+        var phone = document.getElementById('phone').value;
+        if (phone.trim() === '') {
+            phone = 'NULL';
+        }
+        if (password.trim() === repassword.trim()) {
+            return true;
+        }
+        alert('Both passwords must be equal');
+        return false;
+    }
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        var passwordVisibilityButton = document.getElementById('passwordVisibility');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordVisibilityButton.textContent = 'Hide';
+        } else {
+            passwordInput.type = 'password';
+            passwordVisibilityButton.textContent = 'Show';
+        }
+    }
+
+    function toggleRePasswordVisibility() {
+        var passwordInput = document.getElementById('re-password');
+        var passwordVisibilityButton = document.getElementById('re-passwordVisibility');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordVisibilityButton.textContent = 'Hide';
+        } else {
+            passwordInput.type = 'password';
+            passwordVisibilityButton.textContent = 'Show';
+        }
+    }
+</script>
+</body>
+</html>
