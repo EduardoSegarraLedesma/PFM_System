@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Configuration</title>
+    <style>
+        /* Additional styling for better visual appearance */
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: calc(33% - 18px);
+            height: 15px;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+
+        #passwordVisibility {
+            padding: 5px 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        #buttonsContainer {
+            margin-top: 15px;
+        }
+
+        #buttonsContainer button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuration Page</h1>
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+<form action="/editAccount" method="post" onsubmit="return validateForm()">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:value="${user.email}" required><br>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:value="${user.userName}" required><br>
+
+    <label for="personalId">Personal ID:</label>
+    <input type="text" id="personalId" name="personalId" th:value="${user.personalID}" readonly><br>
+
+    <label for="password">Password:</label>
+    <div style="position: relative;">
+        <input type="password" id="password" name="password" th:value="${user.userPassword}" required>
+        <button type="button" id="passwordVisibility" onclick="togglePasswordVisibility()">Show</button>
+    </div>
+
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" th:value="${user.phone}"><br>
+
+    <div id="buttonsContainer">
+        <input type="submit" value="Save Changes">
+    </div>
+</form>
+<br>
+<button onclick="deleteAccount()">Delete Account</button>
+<button onclick="window.location.href='/mainPage'">Go back to main page</button>
+
+<script th:inline="javascript">
+    function deleteAccount() {
+        if (confirm('Are you sure you want to delete your account?')) {
+            window.location.href ='/deleteAccount';
+        }
+    }
+
+    function validateForm() {
+        var phone = document.getElementById('phone').value;
+        if (phone.trim() === '') {
+            phone = 'NULL';
+        }
+        return true;
+    }
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        var passwordVisibilityButton = document.getElementById('passwordVisibility');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordVisibilityButton.textContent = 'Hide';
+        } else {
+            passwordInput.type = 'password';
+            passwordVisibilityButton.textContent = 'Show';
+        }
+    }
+</script>
+</body>
+</html>
