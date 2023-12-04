@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@SpringBootTest(classes = {com.pfm.pfm_system.PfmSystemApplication.class})
 class PfmSystemApplicationTests {
 
     @Autowired
