@@ -29,11 +29,6 @@ public class ServerController {
         return "index.html";
     }
 
-    @GetMapping("/home")
-    public String showHomePage() {
-        return "home.html";
-    }
-
     @GetMapping("/loginPage")
     public String showLoginPage() {
         return "login.html";
@@ -118,7 +113,7 @@ public class ServerController {
     @GetMapping("/logout")
     public String logoutUser() {
         db.cleanUser();
-        return showHomePage();
+        return showIndexPage();
     }
 
     @PostMapping("/editAccount")
@@ -144,7 +139,7 @@ public class ServerController {
     public String deleteAccount(Model model) {
         try {
             db.deleteAccount();
-            return showHomePage();
+            return showIndexPage();
         } catch (SQLException e) {
             model.addAttribute("error",
                     "Failed to delete account, please try later");
