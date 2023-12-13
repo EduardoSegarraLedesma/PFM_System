@@ -1,6 +1,7 @@
 package Data;
 
 public class User {
+
     String email;
     String userName;
     String personalID;

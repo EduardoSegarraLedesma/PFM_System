@@ -13,12 +13,10 @@ import java.sql.*;
 public class PersistenceController {
 
     private static PersistenceController instance = null;
-    private final DataSource dataSource;
     private User user;
 
     private PersistenceController() {
 
-        this.dataSource = UsersDB();
     }
 
     public static PersistenceController getInstance() {
@@ -29,7 +27,7 @@ public class PersistenceController {
 
     public User createAccount(String email, String userName, String personalID, String password, String phone) throws SQLException {
         // #( UserID, Email, userName, personalID, userPassword, phone)
-        Connection connection = dataSource.getConnection();
+        Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         statement.execute("INSERT INTO Users "
                 + "VALUES ("
@@ -39,12 +37,20 @@ public class PersistenceController {
                 + "'" + password + "',"
                 + "'" + phone + "');");
         setUser(statement, email);
+        try {
+            connection = InvestmentDB().getConnection();
+            statement = connection.createStatement();
+            statement.execute("INSERT INTO Users VALUES ('" + getUser().getPersonalID() + "',0);");
+        } catch (SQLException e) {
+            deleteAccount();
+            cleanUser();
+        }
         connection.close();
         return getUser();
     }
 
     public User logIn(String email, String password) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery("SELECT userPassword FROM Users"
                 + " WHERE email = '" + email + "';");
@@ -57,7 +63,7 @@ public class PersistenceController {
     }
 
     public String resetPassword(String email, String userName, String personalID) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         String reset = generateRandomString(20);
         int changes = statement.executeUpdate("UPDATE Users SET userPassword = '" + reset + "' "
@@ -71,7 +77,7 @@ public class PersistenceController {
     }
 
     public void updateConfiguration(String email, String name, String password, String phone) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = UsersDB().getConnection();
         if (!password.equals(getUser().getUserPassword())) {
             updatePassword(password);
             setUser(connection.createStatement(), getUser().getEmail());
@@ -92,7 +98,7 @@ public class PersistenceController {
     }
 
     public void deleteAccount() throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         statement.execute("DELETE FROM Users WHERE email = '" + getUser().getEmail() + "';");
         statement.close();
@@ -133,6 +139,17 @@ public class PersistenceController {
         return dataSource;
     }
 
+    private DataSource InvestmentDB() {
+        //DB Name = PFM_System_Investment
+        //Server Name = southeast-asia-s3rv3r
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        dataSource.setUrl("jdbc:sqlserver://southeast-asia-s3rv3r.database.windows.net:1433;database=PFM_System_Investment");
+        dataSource.setUsername("TongjiStudent");
+        dataSource.setPassword("Tongji_Root");
+        return dataSource;
+    }
+
     private void updateEmail(String newEmail) throws SQLException {
         update("email", newEmail);
     }
@@ -150,7 +167,7 @@ public class PersistenceController {
     }
 
     private void update(String attribute, String newValue) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         statement.executeUpdate("UPDATE Users SET " + attribute + " = '" + newValue + "' WHERE email ='" + getUser().getEmail() + "';");
         connection.close();
