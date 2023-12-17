@@ -33,5 +33,7 @@ jobs:
         with:
           inlineScript: | 
             az spring app deploy \
-            --name ${{ secrets.DEPLOYMENT_NAME }} \
+            -n ${{ secrets.APLICATION_NAME }} \
+            -s ${{ secrets.SERVICE_NAME }} \
+            -g ${{ secrets.RESOURCE_GROUP_NAME }} \
             --artifact-path target/*.jar
