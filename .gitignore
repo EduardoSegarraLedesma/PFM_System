@@ -18,6 +18,7 @@ target/generated-sources
 target/maven-archiver
 target/maven-status
 target/test-classes
+target/PFM_System-0.0.1-SNAPSHOT.jar.original
 .classpath
 HELP.md
 !.mvn/wrapper/maven-wrapper.jar
