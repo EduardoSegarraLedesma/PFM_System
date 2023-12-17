@@ -40,8 +40,10 @@ public class PersistenceController {
         try {
             connection = InvestmentDB().getConnection();
             statement = connection.createStatement();
-            statement.execute("INSERT INTO Users VALUES ('" + getUser().getPersonalID() + "',0);");
+            statement.execute("INSERT INTO Users VALUES ('" + getUser().getPersonalID() + "',0.0);");
         } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Hola soy yo ---- \n\n\n\n");
             deleteAccount();
             cleanUser();
         }
@@ -101,6 +103,9 @@ public class PersistenceController {
         Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         statement.execute("DELETE FROM Users WHERE email = '" + getUser().getEmail() + "';");
+        connection = InvestmentDB().getConnection();
+        statement = connection.createStatement();
+        statement.execute("DELETE FROM Users WHERE Id = '" + getUser().getEmail() + "';");
         statement.close();
         cleanUser();
     }
@@ -129,8 +134,6 @@ public class PersistenceController {
 
     // ----------------- SUPPORT FUNCTIONS ----------------- //
     private DataSource UsersDB() {
-        //DB Name = PFM_System_Users
-        //Server Name = southeast-asia-s3rv3r
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dataSource.setUrl("jdbc:sqlserver://southeast-asia-s3rv3r.database.windows.net:1433;database=PFM_System_Users");
@@ -140,8 +143,6 @@ public class PersistenceController {
     }
 
     private DataSource InvestmentDB() {
-        //DB Name = PFM_System_Investment
-        //Server Name = southeast-asia-s3rv3r
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dataSource.setUrl("jdbc:sqlserver://southeast-asia-s3rv3r.database.windows.net:1433;database=PFM_System_Investment");

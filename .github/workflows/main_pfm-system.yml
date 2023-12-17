@@ -50,4 +50,4 @@ jobs:
           app-name: 'PFM-System'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_60780B49A7C74996AEE1C0A2E6C5EDBB }}
-          package: '*.war'
+          package: '*.jar'

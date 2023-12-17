@@ -11,18 +11,7 @@ import java.sql.SQLException;
 
 @Controller
 public class ServerController {
-    private static ServerController instance = null;
-    private static PersistenceController db;
-
-    private ServerController() {
-        db = PersistenceController.getInstance();
-    }
-
-    public static ServerController getInstance() {
-        if (instance == null)
-            instance = new ServerController();
-        return instance;
-    }
+    private final PersistenceController db = PersistenceController.getInstance();
 
     @GetMapping("/")
     public String showIndexPage() {
