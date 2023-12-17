@@ -32,8 +32,9 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az spring app deployment create\
+            az spring app deployment \
+            -n green-deployment
+            --app ${{ secrets.APPLICATION_NAME }} \
+            --s ${{ secrets.SERVICE_NAME }} \
             --g ${{ secrets.RESOURCE_GROUP_NAME }} \
-            --app ${{ secrets.SERVICE_NAME }} \
-            --name ${{ secrets.APPLICATION_NAME }} \
             --artifact-path target/*.jar
