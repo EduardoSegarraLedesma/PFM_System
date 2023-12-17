@@ -32,7 +32,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az spring app deployment \
+            az spring app deployment create \
             --name green-deployment \
             --app ${{ secrets.APPLICATION_NAME }} \
             --service ${{ secrets.SERVICE_NAME }} \
