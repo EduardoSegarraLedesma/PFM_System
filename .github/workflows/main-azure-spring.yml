@@ -33,8 +33,8 @@ jobs:
         with:
           inlineScript: |
             az spring app deployment \
-            -n green-deployment
+            --name green-deployment \
             --app ${{ secrets.APPLICATION_NAME }} \
-            --s ${{ secrets.SERVICE_NAME }} \
-            --g ${{ secrets.RESOURCE_GROUP_NAME }} \
+            --service ${{ secrets.SERVICE_NAME }} \
+            --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} \
             --artifact-path target/*.jar
