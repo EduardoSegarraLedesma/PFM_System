@@ -2,7 +2,7 @@ name: AzureSpringApps
 on: push
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}
-  AZURE_SUBSCRIPTION: Azure for Students
+  AZURE_SUBSCRIPTION: Microsoft 365 A3 for students use benefit
 
 jobs:
   deploy_to_production:
