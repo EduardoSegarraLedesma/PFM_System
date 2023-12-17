@@ -7,7 +7,7 @@ env:
 jobs:
   deploy_to_production:
     runs-on: ubuntu-latest
-    name: deploy to production with artifact
+    name: deploy to production with .jar artifact
     steps:
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
