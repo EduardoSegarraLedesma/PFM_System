@@ -31,9 +31,9 @@ jobs:
       - name: deploy to production with artifact
         uses: azure/CLI@v1
         with:
-          inlineScript: | 
-            az config set defaults.group=${{ secrets.RESOURCE_GROUP_NAME }}
-            az config set defaults.spring=${{ secrets.SERVICE_NAME }}
-            az spring app deploy \
-            -app ${{ secrets.APPLICATION_NAME }} \
+          inlineScript: |
+            az spring app deployment create\
+            --g ${{ secrets.RESOURCE_GROUP_NAME }} \
+            --app ${{ secrets.SERVICE_NAME }} \
+            --name ${{ secrets.APPLICATION_NAME }} \
             --artifact-path target/*.jar
