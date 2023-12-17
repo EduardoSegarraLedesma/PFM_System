@@ -31,5 +31,7 @@ jobs:
       - name: deploy to production with artifact
         uses: azure/CLI@v1
         with:
-          inlineScript: |
-            az spring app deployment create --app ${{ secrets.APPLICATION_NAME }} --name ${{ secrets.DEPLOYMENT_NAME }} --artifact-path target/*.jar
+          inlineScript: | 
+            az spring app deploy \
+            --name ${{ secrets.DEPLOYMENT_NAME }} \
+            --artifact-path target/*.jar
