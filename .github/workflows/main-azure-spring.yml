@@ -1,10 +1,12 @@
-name: AzureSpringApps
-on: push
-env:
-  ASC_PACKAGE_PATH: ${{ github.workspace }}
-  AZURE_SUBSCRIPTION: Azure for Students
+name: Deploy to Azure Spring Apps
+
+on:
+  push:
+    branches:
+      - main
+      
 jobs:
-  deploy_to_production:
+  deploy:
     runs-on: ubuntu-latest
     name: deploy to production with .jar artifact
     steps:
@@ -27,11 +29,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: deploy to production with artifact
-        uses: azure/spring-apps-deploy@v1
+        uses: azure/CLI@v1
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-          action: Deploy
-          service-name: pfm-system
-          app-name: demo-pfm
-          use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/target/*.jar
+          inlineScript: |
+            az spring app deployment create --app ${{ secrets.APPLICATION_NAME }} --name ${{ secrets.DEPLOYMENT_NAME }} --artifact-path target/*.jar
