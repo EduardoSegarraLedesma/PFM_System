@@ -150,7 +150,7 @@ public class ServerController {
         //inv.setUser(db.getUser().getPersonalID());
         model.addAttribute("user", db.getUser());
         //model.addAttribute("company", inv.getCompanies());
-        return "investmentMain.html";
+        return "investment/investmentMain.html";
     }
 
     @GetMapping("/getCompanies")
