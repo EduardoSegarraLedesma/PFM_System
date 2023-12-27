@@ -1,5 +1,6 @@
-package com.pfm.pfm_system;
+package com.pfm.pfm_system.controllers;
 
+import Data.Company;
 import Data.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -148,12 +149,12 @@ public class ServerController {
     public String showInvestmentPage(Model model) {
         inv.setUser(db.getUser().getPersonalID());
         model.addAttribute("user", db.getUser());
-        model.addAttribute("company", inv.getCompanies());
+        //model.addAttribute("company", inv.getCompanies());
         return "investment/investmentMain.html";
     }
 
     @GetMapping("/getCompanies")
-    public List<Object> getCompanies() {
+    public List<Company> getCompanies() {
         return inv.getCompanies();
     }
 

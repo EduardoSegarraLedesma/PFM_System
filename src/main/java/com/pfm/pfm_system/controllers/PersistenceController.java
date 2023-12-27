@@ -1,4 +1,4 @@
-package com.pfm.pfm_system;
+package com.pfm.pfm_system.controllers;
 
 import Data.User;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
