@@ -13,6 +13,9 @@ import java.sql.SQLException;
 public class ServerController {
     private final PersistenceController db = PersistenceController.getInstance();
 
+
+    // ------------------------ Home Page ------------------------ //
+
     @GetMapping("/")
     public String showIndexPage() {
         return "index.html";
@@ -99,6 +102,8 @@ public class ServerController {
         return "recoverPassword.html";
     }
 
+    // ------------------------ Hub ------------------------ //
+
     @GetMapping("/logout")
     public String logoutUser() {
         db.cleanUser();
@@ -135,4 +140,15 @@ public class ServerController {
             return showConfigurationPage(model);
         }
     }
+
+    // ------------------------ Investment Microservice ------------------------ //
+
+    @GetMapping("/investment")
+    public String showInvestmentPage(Model model) {
+        model.addAttribute("user",db.getUser());
+        return "investmentMain.html";
+    }
+
+    // ------------------------  Microservice ------------------------ //
+
 }

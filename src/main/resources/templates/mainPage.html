@@ -14,6 +14,7 @@
             top: 60px;
             right: 10px;
         }
+
         .logout-button {
             position: absolute;
             top: 90px;
@@ -25,6 +26,7 @@
 <h1>Welcome to the Main Page</h1>
 
 <div class="username">
+    <img src="icons/userIcon.png" alt="User Icon">
     <h2><span th:text="${user.userName}"></span></h2>
 </div>
 
@@ -37,10 +39,9 @@
 </div>
 
 <div>
-    <h2>Options:</h2>
+    <h2>Services:</h2>
     <ul>
-        <li><a href="/equityAndInvestment">Equity and Investment Analysis</a></li>
-        <li><a href="/warningAndReporting">Warning and Reporting</a></li>
+        <li><a href="/investment">Equity and Investment Analysis</a></li>
         <li><a href="/budgetAndForecast">Budget & Forecast</a></li>
         <li><a href="/transactionCategory">Transaction Category</a></li>
     </ul>
