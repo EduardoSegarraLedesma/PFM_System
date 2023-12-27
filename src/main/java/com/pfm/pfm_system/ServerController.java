@@ -146,10 +146,9 @@ public class ServerController {
 
     @GetMapping("/investment")
     public String showInvestmentPage(Model model) {
-        //Need to deploy Microservice
-        //inv.setUser(db.getUser().getPersonalID());
+        inv.setUser(db.getUser().getPersonalID());
         model.addAttribute("user", db.getUser());
-        //model.addAttribute("company", inv.getCompanies());
+        model.addAttribute("company", inv.getCompanies());
         return "investment/investmentMain.html";
     }
 
