@@ -153,11 +153,6 @@ public class ServerController {
         return "investment/investmentMain.html";
     }
 
-    @GetMapping("/getCompanies")
-    public List<Company> getCompanies() {
-        return inv.getCompanies();
-    }
-
     // ------------------------  Microservice ------------------------ //
 
 }

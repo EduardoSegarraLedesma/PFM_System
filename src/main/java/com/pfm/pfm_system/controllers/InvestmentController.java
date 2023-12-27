@@ -3,13 +3,15 @@ package com.pfm.pfm_system.controllers;
 import Data.Company;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@RestController
 public class InvestmentController {
 
     private static String api = null;
@@ -31,13 +33,16 @@ public class InvestmentController {
         //sendUserId(userId, "/setUser");
     }
 
+    @GetMapping("/getCompanies")
     public List<Company> getCompanies() {
         String restPoint = "/companies";
         Type CompaniesList = new TypeToken<ArrayList<Company>>() {
         }.getType();
-        /*String companies = new RestTemplate().getForObject(
+        /*
+        String companies = new RestTemplate().getForObject(
                 api + restPoint,
-                String.class);*/
+                String.class);
+         */
 
         //For testing until Microservice Deployment
         String companies = "[{companyCode=TCEHY, marketCap=$357.50B, stockPrice=$37.73, lastDayVariation=3.45%, companyName=Tencent}," +
