@@ -12,51 +12,62 @@
             display: flex;
             justify-content: space-between;
         }
+
         .left-panel {
             width: 50%;
             padding: 20px;
         }
+
         .right-panel {
             width: 40%;
             padding: 20px;
             display: flex;
             flex-direction: column;
         }
+
         .user-info {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             margin-bottom: 20px;
         }
+
         .user-info img {
             width: 50px;
             height: auto;
         }
+
         #buy-stocks {
             margin-top: 50px;
         }
+
         table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
         }
+
         th, td {
             border: 1px solid #ddd;
             text-align: left;
             padding: 8px;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         #buy-stocks-form {
             display: flex;
             flex-direction: column;
         }
+
         #buy-stocks-form label,
         #buy-stocks-form input,
         #buy-stocks-form button {
             margin-bottom: 10px;
         }
+
         #buy-stocks-form button {
             width: auto;
             margin-left: auto;
@@ -108,21 +119,14 @@
         </form>
     </div>
 </div>
-
 <script>
-    document.getElementById('reload-button').addEventListener('click', function() {
-        const url = '/api/companies'; // Ruta relativa al endpoint del backend
+    document.getElementById('reload-button').addEventListener('click', function () {
+        const url = '/getCompanies';
 
         fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 console.log("Datos recibidos:", data);
-
                 const tableBody = document.getElementById('companies-table').getElementsByTagName('tbody')[0];
                 tableBody.innerHTML = '';
 
@@ -131,12 +135,12 @@
                 data.forEach(company => {
                     const row = tableBody.insertRow();
                     row.innerHTML = `
-                    <td>${company.companyName}</td>
-                    <td>${company.companyCode}</td>
-                    <td>${company.marketCap}</td>
-                    <td>${company.stockPrice}</td>
+                        <td>${company.companyName}</td>
+                        <td>${company.companyCode}</td>
+                        <td>${company.marketCap}</td>
+                        <td>${company.stockPrice}</td>
                     <td>${company.lastDayVariation}</td>
-                `;
+                   `;
                 });
 
                 const dataList = document.getElementById('company-names');
@@ -152,7 +156,8 @@
             });
     });
 
-    document.getElementById('buy-stocks-form').addEventListener('submit', function(event) {
+
+    document.getElementById('buy-stocks-form').addEventListener('submit', function (event) {
         event.preventDefault();
 
     });

@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class ServerController {
     private final PersistenceController db = PersistenceController.getInstance();
-
+    private final InvestmentController inv = InvestmentController.getInstance();
 
     // ------------------------ Home Page ------------------------ //
 
@@ -145,8 +146,16 @@ public class ServerController {
 
     @GetMapping("/investment")
     public String showInvestmentPage(Model model) {
-        model.addAttribute("user",db.getUser());
+        //Need to deploy Microservice
+        //inv.setUser(db.getUser().getPersonalID());
+        model.addAttribute("user", db.getUser());
+        //model.addAttribute("company", inv.getCompanies());
         return "investmentMain.html";
+    }
+
+    @GetMapping("/getCompanies")
+    public List<Object> getCompanies() {
+        return inv.getCompanies();
     }
 
     // ------------------------  Microservice ------------------------ //

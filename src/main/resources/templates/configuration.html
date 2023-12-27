@@ -3,7 +3,6 @@
 <head>
     <title>Configuration</title>
     <style>
-        /* Additional styling for better visual appearance */
         label {
             display: block;
             margin-bottom: 10px;
@@ -64,11 +63,10 @@
 <br>
 <button onclick="deleteAccount()">Delete Account</button>
 <button onclick="window.location.href='/mainPage'">Go back to main page</button>
-
 <script th:inline="javascript">
     function deleteAccount() {
         if (confirm('Are you sure you want to delete your account?')) {
-            window.location.href ='/deleteAccount';
+            window.location.href = '/deleteAccount';
         }
     }
 

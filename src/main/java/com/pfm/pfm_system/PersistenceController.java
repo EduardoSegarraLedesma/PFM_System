@@ -132,7 +132,7 @@ public class PersistenceController {
         user = null;
     }
 
-    // ----------------- SUPPORT FUNCTIONS ----------------- //
+    // ----------------- SUPPORT METHODS ----------------- //
     private DataSource UsersDB() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

@@ -2,14 +2,13 @@ package Data;
 
 public class User {
 
-    String email;
-    String userName;
+    private final String email;
+    private final String userName;
+    private final String personalID;
+    private final String userPassword;
+    private final String phone;
 
-    String personalID;
-    String userPassword;
-    String phone;
-
-    public User( String email, String userName, String personalID, String userPassword, String phone) {
+    public User(String email, String userName, String personalID, String userPassword, String phone) {
         this.email = email;
         this.userName = userName;
         this.personalID = personalID;
