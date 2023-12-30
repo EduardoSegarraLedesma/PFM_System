@@ -1,4 +1,4 @@
-package Data;
+package Data.Investment;
 
 public class Company {
 

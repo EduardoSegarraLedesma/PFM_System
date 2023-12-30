@@ -1,6 +1,5 @@
 package com.pfm.pfm_system.controllers;
 
-import Data.Company;
 import Data.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @Controller
 public class ServerController {
@@ -134,6 +132,7 @@ public class ServerController {
     @GetMapping("/deleteAccount")
     public String deleteAccount(Model model) {
         try {
+            inv.deleteUser(db.getUser().getPersonalID());
             db.deleteAccount();
             return showIndexPage();
         } catch (SQLException e) {
@@ -149,7 +148,6 @@ public class ServerController {
     public String showInvestmentPage(Model model) {
         inv.setUser(db.getUser().getPersonalID());
         model.addAttribute("user", db.getUser());
-        //model.addAttribute("company", inv.getCompanies());
         return "investment/investmentMain.html";
     }
 

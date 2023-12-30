@@ -42,8 +42,6 @@ public class PersistenceController {
             statement = connection.createStatement();
             statement.execute("INSERT INTO Users VALUES ('" + getUser().getPersonalID() + "',0.0);");
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Hola soy yo ---- \n\n\n\n");
             deleteAccount();
             cleanUser();
         }
