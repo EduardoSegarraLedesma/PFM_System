@@ -146,7 +146,7 @@ public class ServerController {
 
     @GetMapping("/investment")
     public String showInvestmentPage(Model model) {
-        inv.setUser(db.getUser().getPersonalID());
+        //inv.setUser(db.getUser().getPersonalID());
         model.addAttribute("user", db.getUser());
         return "investment/investmentMain.html";
     }
