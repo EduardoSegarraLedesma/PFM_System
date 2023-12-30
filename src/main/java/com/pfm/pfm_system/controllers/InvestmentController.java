@@ -31,9 +31,10 @@ public class InvestmentController {
         return instance;
     }
 
-    public void setUser(String userId) {
+    public Float setUser(String userId) {
         String restPoint = "/setUser";
-        ResponseEntity<String> response = PostIdForEntity(restPoint, userId);
+        return 100.98F;
+        //ResponseEntity<String> response = PostIdForEntity(restPoint, userId);
     }
 
     public Float addBalance(String userId, Float money) {
@@ -85,7 +86,6 @@ public class InvestmentController {
     private ResponseEntity<String> PostObjectForEntity(String restPoint, Object obj) {
         return new RestTemplate().postForEntity(api + restPoint, obj, String.class);
     }
-
 
     private ResponseEntity<String> PostPurchaseForEntity(String restPoint, Purchase purchase) {
         return new RestTemplate().postForEntity(api + restPoint, purchase, String.class);
