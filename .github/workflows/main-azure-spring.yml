@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     name: deploy to production with .jar artifact
     steps:
+      - name: Echo Azure Credentials
+        run: echo ${{ secrets.AZURE_CREDENTIALS }}
+    
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
 
