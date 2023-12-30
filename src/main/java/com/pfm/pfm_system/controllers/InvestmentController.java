@@ -67,8 +67,8 @@ public class InvestmentController {
 
         Purchase purchase = new Purchase(
                 PersistenceController.getInstance().getUser().getPersonalID(),
-                map.get("symbol"),
-                map.get("amount"));
+                (String) map.get("symbol"),
+                (Integer) map.get("amount"));
         ResponseEntity<String> response = PostObjectForEntity(restPoint, purchase);
         return response.getBody();
     }
