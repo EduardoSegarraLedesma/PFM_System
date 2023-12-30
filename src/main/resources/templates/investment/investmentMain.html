@@ -88,7 +88,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Los datos serán cargados aquí via JavaScript -->
         </tbody>
     </table>
 </div>
@@ -96,8 +95,8 @@
 
 <div class="right-panel">
     <div class="user-info">
-        <div id="username"><h2><span th:text="${user.userName}"></span></h2></div>
-        <div id="balance">Balance: <span th:text="${balance}"> $</span></div>
+        <div id="username"><h2><span th:text="${userName}"></span></h2></div>
+        <div id="balance">Balance: <span th:text="${balance}"> </span></div>
         <br>
         <button onclick="window.location.href='/mainPage'">Go back to main page</button>
     </div>
@@ -107,7 +106,6 @@
             <label for="company-name">Name</label>
             <input type="text" id="company-name" list="company-names" autocomplete="off">
             <datalist id="company-names">
-                <!-- El datalist será poblado con nombres de compañías via JavaScript -->
             </datalist>
             <label for="amount">Amount</label>
             <input type="number" id="amount">
@@ -152,10 +150,78 @@
             });
     });
 
-    document.getElementById('buy-stocks-form').addEventListener('submit', function (event) {
-        event.preventDefault();
+    document.getElementById('buy-stocks-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
 
+        var name = document.getElementById('company-name').value;
+        var amountStr = document.getElementById('amount').value;
+        var symbol = getCompanyCodeByName(name);
+        var amount = parseInt(amountStr, 10); // Convertir el valor a un número entero
+
+        // Validar que los campos no estén vacíos
+        if (!name || amountStr === '') {
+            alert('Please fill in both the Name and Amount fields.');
+            return;
+        }
+
+        // Validar que el amount sea un número y positivo
+        if (isNaN(amount) || amount <= 0) {
+            alert('Amount must be a positive number.');
+            return;
+        }
+
+        // Hacer una solicitud al servidor para validar el nombre de la compañía
+        fetch(`/validate-company-name?name=${encodeURIComponent(name)}`)
+            .then(response => response.json())
+            .then(isCorrect => {
+                if (!isCorrect) {
+                    alert('The provided name does not match any company in our records.');
+                    return;
+                }
+
+                fetch('/buy-Stocks', {
+                    method: 'POST',
+                    body: JSON.stringify({ name, symbol, amount }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                    .then(handleResponse) // llamada a la función handleResponse
+                    .then(data => {
+                        // Aquí puedes manejar la respuesta positiva, como actualizar la interfaz de usuario
+                        console.log('Compra realizada con éxito:', data);
+                    })
+                    .catch(handleError);
+                console.log('Name:', name, 'Amount:', amount);
+            });
     });
+
+    function handleResponse(response) {
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+        return response.json();
+    }
+
+    // Función para manejar errores que puedan ocurrir durante la solicitud fetch
+    function handleError(error) {
+        // Manejar el error mostrando una ventana de alerta o actualizando la interfaz de usuario
+        alert('There was a problem with the purchase operation: ' + error.message);
+    }
+
+    //Edu ten cuidado. Puedes usar esta función después de que la tabla se haya poblado y tengas el nombre de la compañía.
+    //esto va dentro del <script> en .html
+    function getCompanyCodeByName(companyName) {
+        const tableBody = document.getElementById('companies-table').getElementsByTagName('tbody')[0];
+        const rows = tableBody.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const nameCellText = rows[i].cells[0].textContent; // Asume que el nombre de la compañía está en la primera columna
+            if (nameCellText === companyName) {
+                const codeCellText = rows[i].cells[1].textContent; // Asume que el código de la compañía está en la segunda columna
+                return codeCellText;
+            }
+        }
+        return null; // o puedes devolver un mensaje o realizar una acción si la compañía no se encuentra
+    }
 
 </script>
 

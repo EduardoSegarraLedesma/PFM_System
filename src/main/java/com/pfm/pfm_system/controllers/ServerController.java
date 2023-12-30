@@ -36,18 +36,6 @@ public class ServerController {
         return "recoverPassword.html";
     }
 
-    @GetMapping("/mainPage")
-    public String showMainPage(Model model) {
-        model.addAttribute("user", db.getUser());
-        return "mainPage.html";
-    }
-
-    @GetMapping("/configurationPage")
-    public String showConfigurationPage(Model model) {
-        model.addAttribute("user", db.getUser());
-        return "configuration.html";
-    }
-
     @PostMapping("/register")
     public String registerUser(
             @RequestParam("email") String email,
@@ -103,6 +91,17 @@ public class ServerController {
     }
 
     // ------------------------ Hub ------------------------ //
+    @GetMapping("/mainPage")
+    public String showMainPage(Model model) {
+        model.addAttribute("user", db.getUser());
+        return "mainPage.html";
+    }
+
+    @GetMapping("/configurationPage")
+    public String showConfigurationPage(Model model) {
+        model.addAttribute("user", db.getUser());
+        return "configuration.html";
+    }
 
     @GetMapping("/logout")
     public String logoutUser() {
@@ -146,8 +145,8 @@ public class ServerController {
 
     @GetMapping("/investment")
     public String showInvestmentPage(Model model) {
-        model.addAttribute("user", db.getUser());
-        model.addAttribute("balance",inv.setUser(db.getUser().getPersonalID()));
+        model.addAttribute("userName", db.getUser().getUserName());
+        model.addAttribute("balance", inv.setUser(db.getUser().getPersonalID()));
         return "investment/investmentMain.html";
     }
 

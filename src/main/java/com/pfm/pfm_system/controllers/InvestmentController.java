@@ -1,11 +1,13 @@
 package com.pfm.pfm_system.controllers;
 
 import Data.Investment.Company;
+import Data.Investment.ComparePurchase;
 import Data.Investment.Purchase;
 import Data.Investment.Sell;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class InvestmentController {
@@ -31,15 +34,15 @@ public class InvestmentController {
         return instance;
     }
 
-    public Float setUser(String userId) {
+    public String setUser(String userId) {
         String restPoint = "/setUser";
-        return 100.98F;
-        //ResponseEntity<String> response = PostIdForEntity(restPoint, userId);
+        ResponseEntity<String> response = PostIdForEntity(restPoint, userId);
+        return response.getBody();
     }
 
-    public Float addBalance(String userId, Float money) {
+    public String addBalance(String userId, Float money) {
         String restPoint = "/addBalance/{id}/{money}";
-        ResponseEntity<Float> response = GetBalanceForEntity(restPoint, userId, money);
+        ResponseEntity<String> response = GetBalanceForEntity(restPoint, userId, money);
         return response.getBody();
     }
 
@@ -47,30 +50,35 @@ public class InvestmentController {
     public List<Company> getCompanies() {
         String restPoint = "/companies";
         ResponseEntity<String> companies = GetStringForEntity(restPoint);
-        //For testing until Microservice Deployment
-       /* String companies = "[{companyCode=TCEHY, marketCap=$357.50B, stockPrice=$37.73, lastDayVariation=3.45%, companyName=Tencent}," +
-                " {companyCode=600519.SS, marketCap=$293.16B, stockPrice=$233.37, lastDayVariation=-0.18%, companyName=KweichowMoutai}," +
-                " {companyCode=1398.HK, marketCap=$226.55B, stockPrice=$0.48, lastDayVariation=1.63%, companyName=ICBC}," +
-                " {companyCode=BABA, marketCap=$193.17B, stockPrice=$75.85, lastDayVariation=0.76%, companyName=Alibaba}," +
-                " {companyCode=PDD, marketCap=$192.93B, stockPrice=$145.22, lastDayVariation=0.51%, companyName=Pinduoduo}]";
-        */
         Type CompaniesList = new TypeToken<ArrayList<Company>>() {
         }.getType();
         return new Gson().fromJson(companies.getBody(), CompaniesList);
     }
 
-    public void buyShares(String Id, String Symbol, int Quantity) {
-        String restPoint = "/buyShares";
-        Purchase purchase = new Purchase(Id, Symbol, Quantity);
-        ResponseEntity<String> response = PostObjectForEntity(restPoint, purchase);
+    public List<ComparePurchase> getPurchases(String id) {
+        String restPoint = "/purchases/{id}";
+        ResponseEntity<List<ComparePurchase>> purchases = GetPurchasesForEntity(restPoint, id);
+        return purchases.getBody();
     }
 
-    public void sellShares(String Id, String Symbol, int Quantity) {
-        String restPoint = "/sellShares";
+    @GetMapping("/buy-Stocks")
+    public String buyShares(@RequestBody Map<String,Object> map) {
+        String restPoint = "/buyStock";
+
+        Purchase purchase = new Purchase(
+                PersistenceController.getInstance().getUser().getPersonalID(),
+                map.get("symbol"),
+                map.get("amount"));
+        ResponseEntity<String> response = PostObjectForEntity(restPoint, purchase);
+        return response.getBody();
+    }
+
+    public String sellShares(String Id, String Symbol, int Quantity) {
+        String restPoint = "/sellStock";
         Sell sell = new Sell(Id, Symbol, Quantity);
         ResponseEntity<String> response = PostObjectForEntity(restPoint, sell);
+        return response.getBody();
     }
-
 
     public void deleteUser(String userId) {
         String restPoint = "/deleteUser";
@@ -95,12 +103,17 @@ public class InvestmentController {
         return new RestTemplate().postForEntity(api + restPoint, sell, String.class);
     }
 
-    private ResponseEntity<Float> GetBalanceForEntity(String restPoint, String id, Float money) {
-        return new RestTemplate().getForEntity(api + restPoint, Float.class, id, money);
+    private ResponseEntity<String> GetBalanceForEntity(String restPoint, String id, Float money) {
+        return new RestTemplate().getForEntity(api + restPoint, String.class, id, money);
     }
 
     private ResponseEntity<String> GetStringForEntity(String restPoint) {
         return new RestTemplate().getForEntity(api + restPoint, String.class);
+    }
+
+    private ResponseEntity<List<ComparePurchase>> GetPurchasesForEntity(String restPoint, String id) {
+        Class<List<ComparePurchase>> PurchaseList = (Class<List<ComparePurchase>>) (Class<?>) List.class;
+        return new RestTemplate().getForEntity(api + restPoint, PurchaseList, id);
     }
 
 }

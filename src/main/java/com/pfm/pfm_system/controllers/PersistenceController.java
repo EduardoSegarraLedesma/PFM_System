@@ -37,14 +37,6 @@ public class PersistenceController {
                 + "'" + password + "',"
                 + "'" + phone + "');");
         setUser(statement, email);
-        try {
-            connection = InvestmentDB().getConnection();
-            statement = connection.createStatement();
-            statement.execute("INSERT INTO Users VALUES ('" + getUser().getPersonalID() + "',0.0);");
-        } catch (SQLException e) {
-            deleteAccount();
-            cleanUser();
-        }
         connection.close();
         return getUser();
     }
@@ -101,10 +93,6 @@ public class PersistenceController {
         Connection connection = UsersDB().getConnection();
         Statement statement = connection.createStatement();
         statement.execute("DELETE FROM Users WHERE email = '" + getUser().getEmail() + "';");
-        connection = InvestmentDB().getConnection();
-        statement = connection.createStatement();
-        statement.execute("DELETE FROM Users WHERE Id = '" + getUser().getEmail() + "';");
-        statement.close();
         cleanUser();
     }
 
@@ -135,15 +123,6 @@ public class PersistenceController {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dataSource.setUrl("jdbc:sqlserver://southeast-asia-s3rv3r.database.windows.net:1433;database=PFM_System_Users");
-        dataSource.setUsername("TongjiStudent");
-        dataSource.setPassword("Tongji_Root");
-        return dataSource;
-    }
-
-    private DataSource InvestmentDB() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        dataSource.setUrl("jdbc:sqlserver://southeast-asia-s3rv3r.database.windows.net:1433;database=PFM_System_Investment");
         dataSource.setUsername("TongjiStudent");
         dataSource.setPassword("Tongji_Root");
         return dataSource;
