@@ -35,8 +35,8 @@ public class InvestmentController {
     }
 
     public String setUser(String userId) {
-        String restPoint = "/setUser";
-        ResponseEntity<String> response = PostIdForEntity(restPoint, userId);
+        String restPoint = "/setUser/{userId}";
+        ResponseEntity<String> response = PostObjectForBalance(restPoint, userId);
         return response.getBody();
     }
 
@@ -62,45 +62,36 @@ public class InvestmentController {
     }
 
     @GetMapping("/buy-Stocks")
-    public String buyShares(@RequestBody Map<String,Object> map) {
-        String restPoint = "/buyStock";
-
+    public String buyShares(@RequestBody Map<String, Object> map) {
+        String restPoint = "/buyStock/{purchase}";
         Purchase purchase = new Purchase(
                 PersistenceController.getInstance().getUser().getPersonalID(),
                 (String) map.get("symbol"),
                 (Integer) map.get("amount"));
-        ResponseEntity<String> response = PostObjectForEntity(restPoint, purchase);
+        ResponseEntity<String> response = PostObjectForBalance(restPoint, purchase);
         return response.getBody();
     }
 
     public String sellShares(String Id, String Symbol, int Quantity) {
-        String restPoint = "/sellStock";
+        String restPoint = "/sellStock/{sell}";
         Sell sell = new Sell(Id, Symbol, Quantity);
-        ResponseEntity<String> response = PostObjectForEntity(restPoint, sell);
+        ResponseEntity<String> response = PostObjectForBalance(restPoint, sell);
         return response.getBody();
     }
 
     public void deleteUser(String userId) {
-        String restPoint = "/deleteUser";
-        ResponseEntity<String> response = PostIdForEntity(restPoint, userId);
+        String restPoint = "/deleteUser/{userId}";
+        ResponseEntity<String> response = PostIdForAnswer(restPoint, userId);
     }
 
     // ----------------- SUPPORT METHODS ----------------- //
 
-    private ResponseEntity<String> PostIdForEntity(String restPoint, String id) {
-        return new RestTemplate().postForEntity(api + restPoint, id, String.class);
+    private ResponseEntity<String> PostIdForAnswer(String restPoint, String id) {
+        return new RestTemplate().getForEntity(api + restPoint, String.class, id);
     }
 
-    private ResponseEntity<String> PostObjectForEntity(String restPoint, Object obj) {
-        return new RestTemplate().postForEntity(api + restPoint, obj, String.class);
-    }
-
-    private ResponseEntity<String> PostPurchaseForEntity(String restPoint, Purchase purchase) {
-        return new RestTemplate().postForEntity(api + restPoint, purchase, String.class);
-    }
-
-    private ResponseEntity<String> PostSellForEntity(String restPoint, Sell sell) {
-        return new RestTemplate().postForEntity(api + restPoint, sell, String.class);
+    private ResponseEntity<String> PostObjectForBalance(String restPoint, Object obj) {
+        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
     }
 
     private ResponseEntity<String> GetBalanceForEntity(String restPoint, String id, Float money) {
