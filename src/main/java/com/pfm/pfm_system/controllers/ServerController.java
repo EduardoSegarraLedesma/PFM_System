@@ -150,6 +150,20 @@ public class ServerController {
         return "investment/investmentMain.html";
     }
 
+    @GetMapping("/investmentWallet")
+    public String showInvestmentWallet(Model model) {
+        model.addAttribute("purchases", inv.getPurchases(db.getUser().getPersonalID()));
+        model.addAttribute("balance", inv.getBalance());
+        return "investment/model.html";
+    }
+
+    @GetMapping("/addInvestmentMoney")
+    public String addInvestmentMoney(@RequestParam(value = "moneyInput", required = false) Float money,
+                                     Model model) {
+        inv.addBalance(db.getUser().getPersonalID(), money);
+        return showInvestmentWallet(model);
+    }
+
     // ------------------------  Microservice ------------------------ //
 
 }

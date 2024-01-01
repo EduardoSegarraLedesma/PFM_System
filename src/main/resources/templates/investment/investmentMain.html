@@ -98,6 +98,8 @@
         <div id="username"><h2><span th:text="${userName}"></span></h2></div>
         <div id="balance">Balance: <span th:text="${balance}"> </span></div>
         <br>
+        <button onclick="window.location.href='/investmentWallet'">Wallet</button>
+        <br>
         <button onclick="window.location.href='/mainPage'">Go back to main page</button>
     </div>
     <div id="buy-stocks">
@@ -150,7 +152,7 @@
             });
     });
 
-    document.getElementById('buy-stocks-form').addEventListener('submit', function(event) {
+    document.getElementById('buy-stocks-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
 
         var name = document.getElementById('company-name').value;
@@ -181,8 +183,8 @@
 
                 fetch('/buy-Stocks', {
                     method: 'POST',
-                    body: JSON.stringify({ name, symbol, amount }),
-                    headers: { 'Content-Type': 'application/json' }
+                    body: JSON.stringify({name, symbol, amount}),
+                    headers: {'Content-Type': 'application/json'}
                 })
                     .then(handleResponse) // llamada a la función handleResponse
                     .then(data => {

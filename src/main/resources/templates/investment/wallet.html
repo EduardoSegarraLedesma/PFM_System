@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wallet</title>
+
+</head>
+<body>
+<h1>Wallet</h1>
+
+<h2>
+    <div>
+        <label>Balance: </label>
+        <span th:text="${balance}"></span>
+    </div>
+</h2>
+<br>
+<div>
+    <form action="/addInvestmentMoney" method="post">
+        <label for="moneyInput">Enter Money:</label>
+        <input type="number" id="moneyInput" name="money" min="0.01" required>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div>
+    <ul>
+        <li th:each="purchase : ${purchases}">
+            <span th:text="${purchases.Symbol}">Symbol</span>
+            <br>
+            <span th:text="${purchases.Quantity}">Quantity</span>
+            <br>
+            <span th:text="${purchases.TransactionDate}">Transaction Date</span>
+            <br>
+            <span th:text="${purchases.buyPrice}">Price when Bought</span>
+            <br>
+            <span th:text="${purchases.nowPrice}">Price Now</span>
+            <br>
+            <span th:text="${purchases.difference}">Price Difference</span>
+            <br>
+        </li>
+    </ul>
+</div>
+
+<!-- Back Button -->
+<button onclick="location.href='/investment'">Back to Investment Page</button>
+</body>
+</html>
