@@ -63,12 +63,14 @@ public class InvestmentController {
 
     public List<ComparePurchase> getPurchases(String id) {
         String restPoint = "/purchases/{id}";
-        ResponseEntity<List<ComparePurchase>> purchases = GetPurchasesForEntity(restPoint, id);
-        return purchases.getBody();
+        ResponseEntity<String> purchases = GetStringForId(restPoint, id);
+        Type PurchasesList = new TypeToken<ArrayList<Purchase>>() {
+        }.getType();
+        return new Gson().fromJson(purchases.getBody(), PurchasesList);
     }
 
     @GetMapping("/buy-Stocks")
-    public void buyShares(@RequestBody Map<String, Object> map) {
+    public ResponseEntity<String> buyShares(@RequestBody Map<String, Object> map) {
         String restPoint = "/buyStock/{purchase}";
         Purchase purchase = new Purchase(
                 PersistenceController.getInstance().getUser().getPersonalID(),
@@ -76,6 +78,7 @@ public class InvestmentController {
                 (Integer) map.get("amount"));
         ResponseEntity<String> response = PostPurchaseForBalance(restPoint, purchase);
         balance = response.getBody();
+        return response;
     }
 
     public void sellShares(String Id, String Symbol, int Quantity) {
@@ -115,10 +118,8 @@ public class InvestmentController {
     private ResponseEntity<String> GetStringForEntity(String restPoint) {
         return new RestTemplate().getForEntity(api + restPoint, String.class);
     }
-
-    private ResponseEntity<List<ComparePurchase>> GetPurchasesForEntity(String restPoint, String id) {
-        Class<List<ComparePurchase>> PurchaseList = (Class<List<ComparePurchase>>) (Class<?>) List.class;
-        return new RestTemplate().getForEntity(api + restPoint, PurchaseList, id);
+    private ResponseEntity<String> GetStringForId(String restPoint, String id) {
+        return new RestTemplate().getForEntity(api + restPoint, String.class, id);
     }
 
 }
