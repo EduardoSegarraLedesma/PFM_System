@@ -22,7 +22,7 @@ public class InvestmentController {
 
     private static String api = null;
 
-    private String balance = null;
+    private String balance = "0 $";
 
     private static InvestmentController instance = null;
 
@@ -36,18 +36,16 @@ public class InvestmentController {
         return instance;
     }
 
-    public String setUser(String userId) {
+    public void setUser(String userId) {
         String restPoint = "/setUser/{userId}";
         ResponseEntity<String> response = PostStringForBalance(restPoint, userId);
         balance = response.getBody();
-        return response.getBody();
     }
 
-    public String addBalance(String userId, Float money) {
+    public void addBalance(String userId, Float money) {
         String restPoint = "/addBalance/{id}/{money}";
         ResponseEntity<String> response = GetBalanceForEntity(restPoint, userId, money);
         balance = response.getBody();
-        return response.getBody();
     }
 
     public String getBalance() {
@@ -70,7 +68,7 @@ public class InvestmentController {
     }
 
     @GetMapping("/buy-Stocks")
-    public String buyShares(@RequestBody Map<String, Object> map) {
+    public void buyShares(@RequestBody Map<String, Object> map) {
         String restPoint = "/buyStock/{purchase}";
         Purchase purchase = new Purchase(
                 PersistenceController.getInstance().getUser().getPersonalID(),
@@ -78,15 +76,13 @@ public class InvestmentController {
                 (Integer) map.get("amount"));
         ResponseEntity<String> response = PostPurchaseForBalance(restPoint, purchase);
         balance = response.getBody();
-        return response.getBody();
     }
 
-    public String sellShares(String Id, String Symbol, int Quantity) {
+    public void sellShares(String Id, String Symbol, int Quantity) {
         String restPoint = "/sellStock/{sell}";
         Sell sell = new Sell(Id, Symbol, Quantity);
         ResponseEntity<String> response = PostSellForBalance(restPoint, sell);
         balance = response.getBody();
-        return response.getBody();
     }
 
     public void deleteUser(String userId) {
