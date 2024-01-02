@@ -1,6 +1,8 @@
 package com.pfm.pfm_system.controllers;
 
 import Data.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -164,10 +166,11 @@ public class ServerController {
                             @RequestParam("amount") int amount,
                             @RequestParam("companyCode") String companyCode,
                             Model model) {
-        inv.buyShares(db.getUser().getPersonalID(), companyCode, amount);
+        ResponseEntity<String> response = inv.buyShares(db.getUser().getPersonalID(), companyCode, amount);
+        if (response.getStatusCode() != HttpStatus.OK)
+            model.addAttribute("error", "Not Enough Balance for the Operation");
         return showInvestmentPage(model);
     }
-
 
     @GetMapping("/addInvestmentMoney")
     public String addInvestmentMoney(@RequestParam(value = "moneyInput", required = false) Float money,

@@ -102,6 +102,9 @@
         <br>
         <button onclick="window.location.href='/mainPage'">Go back to main page</button>
     </div>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
     <div id="buy-stocks">
         <h2>Buy Stocks</h2>
         <form id="buy-stocks-form" action="/buyStocks" method="POST" onsubmit="return validateForm()">
@@ -164,7 +167,11 @@
             alert('Please fill in both the Name and Amount fields.');
             return false; // Prevent form submission
         }
-
+        var companyNames = Array.from(document.getElementById('company-names').options).map(option => option.value);
+        if (!companyNames.includes(name)) {
+            alert('The provided name does not match any company in our records.');
+            return false; // Prevent form submission
+        }
         if (isNaN(amount) || amount <= 0) {
             alert('Amount must be a positive number.');
             return false; // Prevent form submission
