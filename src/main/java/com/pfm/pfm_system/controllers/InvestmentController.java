@@ -73,7 +73,8 @@ public class InvestmentController {
         String restPoint = "/buyStock/{purchase}";
         Purchase purchase = new Purchase(id, symbol, amount);
         ResponseEntity<String> response = GetStringForString(restPoint, new Gson().toJson(purchase));
-        balance = response.getBody();
+        if (response.getBody().contains("$"))
+            balance = response.getBody();
         return response;
     }
 

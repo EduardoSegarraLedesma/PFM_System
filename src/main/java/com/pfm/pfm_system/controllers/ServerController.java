@@ -1,7 +1,6 @@
 package com.pfm.pfm_system.controllers;
 
 import Data.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -167,7 +166,7 @@ public class ServerController {
                             @RequestParam("companyCode") String companyCode,
                             Model model) {
         ResponseEntity<String> response = inv.buyShares(db.getUser().getPersonalID(), companyCode, amount);
-        if (response.getStatusCode() != HttpStatus.OK)
+        if (!response.getBody().contains("$"))
             model.addAttribute("error", "Not Enough Balance for the Operation");
         return showInvestmentPage(model);
     }
