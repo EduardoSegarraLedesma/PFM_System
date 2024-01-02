@@ -187,8 +187,8 @@ public class ServerController {
         List<Sell> toSell = new ArrayList<>();
         for (String purchaseInfo : selectedPurchases) {
             String[] parts = purchaseInfo.split(",");
-            String symbol = parts[0]; // Symbol of the purchase
-            String transactionDate = parts[1].replace("T", " ");
+            String symbol = parts[0];
+            String transactionDate = parts[1];
             toSell.add(new Sell(db.getUser().getPersonalID(), symbol, transactionDate));
         }
         inv.sellShares(toSell);
