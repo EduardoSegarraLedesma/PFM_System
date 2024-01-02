@@ -7,7 +7,6 @@ import Data.Investment.Sell;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class InvestmentController {
@@ -69,13 +67,9 @@ public class InvestmentController {
         return new Gson().fromJson(purchases.getBody(), PurchasesList);
     }
 
-    @GetMapping("/buy-Stocks")
-    public ResponseEntity<String> buyShares(@RequestBody Map<String, Object> map) {
+    public ResponseEntity<String> buyShares(String id, String symbol, int amount) {
         String restPoint = "/buyStock/{purchase}";
-        Purchase purchase = new Purchase(
-                PersistenceController.getInstance().getUser().getPersonalID(),
-                (String) map.get("symbol"),
-                (Integer) map.get("amount"));
+        Purchase purchase = new Purchase(id, symbol, amount);
         ResponseEntity<String> response = PostPurchaseForBalance(restPoint, purchase);
         balance = response.getBody();
         return response;
@@ -118,6 +112,7 @@ public class InvestmentController {
     private ResponseEntity<String> GetStringForEntity(String restPoint) {
         return new RestTemplate().getForEntity(api + restPoint, String.class);
     }
+
     private ResponseEntity<String> GetStringForId(String restPoint, String id) {
         return new RestTemplate().getForEntity(api + restPoint, String.class, id);
     }

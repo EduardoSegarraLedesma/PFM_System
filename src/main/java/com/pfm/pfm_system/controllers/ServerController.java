@@ -155,8 +155,18 @@ public class ServerController {
     public String showInvestmentWallet(Model model) {
         model.addAttribute("purchases", inv.getPurchases(db.getUser().getPersonalID()));
         model.addAttribute("balance", inv.getBalance());
+        model.addAttribute("userName", db.getUser().getUserName());
         return "investment/wallet.html";
     }
+
+    @GetMapping("/buyStocks")
+    public String buyStocks(@RequestParam("amount") int amount,
+                            @RequestParam("symbol") String companyCode,
+                            Model model) {
+        inv.buyShares(db.getUser().getPersonalID(), companyCode, amount);
+        return showInvestmentWallet(model);
+    }
+
 
     @GetMapping("/addInvestmentMoney")
     public String addInvestmentMoney(@RequestParam(value = "moneyInput", required = false) Float money,
@@ -165,6 +175,6 @@ public class ServerController {
         return showInvestmentWallet(model);
     }
 
-    // ------------------------  Microservice ------------------------ //
+    // ------------------------  Other Microservices ------------------------ //
 
 }

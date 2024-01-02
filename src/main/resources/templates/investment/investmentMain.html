@@ -104,13 +104,14 @@
     </div>
     <div id="buy-stocks">
         <h2>Buy Stocks</h2>
-        <form id="buy-stocks-form">
+        <form id="buy-stocks-form" action="/buyStocks" method="GET" onsubmit="return validateForm()">
             <label for="company-name">Name</label>
-            <input type="text" id="company-name" list="company-names" autocomplete="off">
+            <input type="text" id="company-name" name="name" list="company-names" autocomplete="off">
             <datalist id="company-names">
             </datalist>
             <label for="amount">Amount</label>
-            <input type="number" id="amount">
+            <input type="number" id="amount" name="amount">
+            <input type="hidden" id="companyCode" name="companyCode">
             <button type="submit">BUY</button>
         </form>
     </div>
@@ -152,65 +153,27 @@
             });
     });
 
-    document.getElementById('buy-stocks-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
-
+    function validateForm() {
+        // Validate the form inputs here
         var name = document.getElementById('company-name').value;
         var amountStr = document.getElementById('amount').value;
         var symbol = getCompanyCodeByName(name);
-        var amount = parseInt(amountStr, 10); // Convertir el valor a un número entero
-
-        // Validar que los campos no estén vacíos
+        var amount = parseInt(amountStr, 10);
+        document.getElementById('companyCode').value = symbol;
         if (!name || amountStr === '') {
             alert('Please fill in both the Name and Amount fields.');
-            return;
+            return false; // Prevent form submission
         }
 
-        // Validar que el amount sea un número y positivo
         if (isNaN(amount) || amount <= 0) {
             alert('Amount must be a positive number.');
-            return;
+            return false; // Prevent form submission
         }
 
-        // Hacer una solicitud al servidor para validar el nombre de la compañía
-        fetch(`/validate-company-name?name=${encodeURIComponent(name)}`)
-            .then(response => response.json())
-            .then(isCorrect => {
-                if (!isCorrect) {
-                    alert('The provided name does not match any company in our records.');
-                    return;
-                }
-
-                fetch('/buy-Stocks', {
-                    method: 'POST',
-                    body: JSON.stringify({name, symbol, amount}),
-                    headers: {'Content-Type': 'application/json'}
-                })
-                    .then(handleResponse) // llamada a la función handleResponse
-                    .then(data => {
-                        // Aquí puedes manejar la respuesta positiva, como actualizar la interfaz de usuario
-                        console.log('Compra realizada con éxito:', data);
-                    })
-                    .catch(handleError);
-                console.log('Name:', name, 'Amount:', amount);
-            });
-    });
-
-    function handleResponse(response) {
-        if (!response.ok) {
-            throw new Error('Network response was not ok.');
-        }
-        return response.json();
+        return true; // Allow form submission
     }
 
-    // Función para manejar errores que puedan ocurrir durante la solicitud fetch
-    function handleError(error) {
-        // Manejar el error mostrando una ventana de alerta o actualizando la interfaz de usuario
-        alert('There was a problem with the purchase operation: ' + error.message);
-    }
 
-    //Edu ten cuidado. Puedes usar esta función después de que la tabla se haya poblado y tengas el nombre de la compañía.
-    //esto va dentro del <script> en .html
     function getCompanyCodeByName(companyName) {
         const tableBody = document.getElementById('companies-table').getElementsByTagName('tbody')[0];
         const rows = tableBody.getElementsByTagName('tr');
