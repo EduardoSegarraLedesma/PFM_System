@@ -104,7 +104,7 @@
     </div>
     <div id="buy-stocks">
         <h2>Buy Stocks</h2>
-        <form id="buy-stocks-form" action="/buyStocks" method="GET" onsubmit="return validateForm()">
+        <form id="buy-stocks-form" action="/buyStocks" method="POST" onsubmit="return validateForm()">
             <label for="company-name">Name</label>
             <input type="text" id="company-name" name="name" list="company-names" autocomplete="off">
             <datalist id="company-names">

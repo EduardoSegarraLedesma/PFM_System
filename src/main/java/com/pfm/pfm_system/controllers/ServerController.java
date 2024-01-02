@@ -159,13 +159,13 @@ public class ServerController {
         return "investment/wallet.html";
     }
 
-    @GetMapping("/buyStocks")
+    @PostMapping("/buyStocks")
     public String buyStocks(@RequestParam("name") String name,
                             @RequestParam("amount") int amount,
                             @RequestParam("companyCode") String companyCode,
                             Model model) {
         inv.buyShares(db.getUser().getPersonalID(), companyCode, amount);
-        return showInvestmentWallet(model);
+        return showInvestmentPage(model);
     }
 
 

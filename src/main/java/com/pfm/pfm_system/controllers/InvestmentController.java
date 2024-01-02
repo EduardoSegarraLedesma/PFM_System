@@ -36,13 +36,13 @@ public class InvestmentController {
 
     public void setUser(String userId) {
         String restPoint = "/setUser/{userId}";
-        ResponseEntity<String> response = PostStringForBalance(restPoint, userId);
+        ResponseEntity<String> response = GetStringForString(restPoint, userId);
         balance = response.getBody();
     }
 
     public void addBalance(String userId, Float money) {
         String restPoint = "/addBalance/{id}/{money}";
-        ResponseEntity<String> response = GetBalanceForEntity(restPoint, userId, money);
+        ResponseEntity<String> response = GetStringForStringFloat(restPoint, userId, money);
         balance = response.getBody();
     }
 
@@ -53,7 +53,7 @@ public class InvestmentController {
     @GetMapping("/getCompanies")
     public List<Company> getCompanies() {
         String restPoint = "/companies";
-        ResponseEntity<String> companies = GetStringForEntity(restPoint);
+        ResponseEntity<String> companies = GetString(restPoint);
         Type CompaniesList = new TypeToken<ArrayList<Company>>() {
         }.getType();
         return new Gson().fromJson(companies.getBody(), CompaniesList);
@@ -61,7 +61,7 @@ public class InvestmentController {
 
     public List<ComparePurchase> getPurchases(String id) {
         String restPoint = "/purchases/{id}";
-        ResponseEntity<String> purchases = GetStringForId(restPoint, id);
+        ResponseEntity<String> purchases = GetStringForString(restPoint, id);
         Type PurchasesList = new TypeToken<ArrayList<ComparePurchase>>() {
         }.getType();
         return new Gson().fromJson(purchases.getBody(), PurchasesList);
@@ -70,7 +70,7 @@ public class InvestmentController {
     public ResponseEntity<String> buyShares(String id, String symbol, int amount) {
         String restPoint = "/buyStock/{purchase}";
         Purchase purchase = new Purchase(id, symbol, amount);
-        ResponseEntity<String> response = PostPurchaseForBalance(restPoint, purchase);
+        ResponseEntity<String> response = GetStringForString(restPoint, new Gson().toJson(purchase));
         balance = response.getBody();
         return response;
     }
@@ -78,43 +78,26 @@ public class InvestmentController {
     public void sellShares(String Id, String Symbol, int Quantity) {
         String restPoint = "/sellStock/{sell}";
         Sell sell = new Sell(Id, Symbol, Quantity);
-        ResponseEntity<String> response = PostSellForBalance(restPoint, sell);
+        ResponseEntity<String> response = GetStringForString(restPoint, new Gson().toJson(sell));
         balance = response.getBody();
     }
 
     public void deleteUser(String userId) {
         String restPoint = "/deleteUser/{userId}";
-        ResponseEntity<String> response = PostIdForAnswer(restPoint, userId);
+        ResponseEntity<String> response = GetStringForString(restPoint, userId);
     }
 
     // ----------------- SUPPORT METHODS ----------------- //
 
-    private ResponseEntity<String> PostIdForAnswer(String restPoint, String id) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, id);
-    }
-
-    private ResponseEntity<String> PostStringForBalance(String restPoint, String obj) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
-    }
-
-    private ResponseEntity<String> PostPurchaseForBalance(String restPoint, Purchase obj) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
-    }
-
-    private ResponseEntity<String> PostSellForBalance(String restPoint, Sell obj) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
-    }
-
-    private ResponseEntity<String> GetBalanceForEntity(String restPoint, String id, Float money) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, id, money);
-    }
-
-    private ResponseEntity<String> GetStringForEntity(String restPoint) {
+    private ResponseEntity<String> GetString(String restPoint) {
         return new RestTemplate().getForEntity(api + restPoint, String.class);
     }
 
-    private ResponseEntity<String> GetStringForId(String restPoint, String id) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, id);
+    private ResponseEntity<String> GetStringForString(String restPoint, String obj){
+        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
     }
 
+    private ResponseEntity<String> GetStringForStringFloat(String restPoint, String id, Float money) {
+        return new RestTemplate().getForEntity(api + restPoint, String.class, id, money);
+    }
 }
