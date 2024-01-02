@@ -64,7 +64,7 @@ public class InvestmentController {
     public List<ComparePurchase> getPurchases(String id) {
         String restPoint = "/purchases/{id}";
         ResponseEntity<String> purchases = GetStringForId(restPoint, id);
-        Type PurchasesList = new TypeToken<ArrayList<Purchase>>() {
+        Type PurchasesList = new TypeToken<ArrayList<ComparePurchase>>() {
         }.getType();
         return new Gson().fromJson(purchases.getBody(), PurchasesList);
     }

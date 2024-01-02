@@ -4,17 +4,17 @@ public class ComparePurchase {
 
     private final String Symbol;
     private final int Quantity;
-    private final Float buyPrice;
-    private final Float nowPrice;
-    private final Float difference;
+    private final String buyPrice;
+    private final String nowPrice;
+    private final String difference;
     private final String TransactionDate;
 
-    public ComparePurchase(String symbol, int quantity, Float buyPrice, Float nowPrice, String TransactionDate) {
+    public ComparePurchase(String symbol, int quantity, String buyPrice, String nowPrice, String difference, String TransactionDate) {
         this.Symbol = symbol;
         this.Quantity = quantity;
         this.buyPrice = buyPrice;
         this.nowPrice = nowPrice;
-        this.difference = (1 - (buyPrice / nowPrice)) * 100;
+        this.difference = difference;
         this.TransactionDate = TransactionDate;
     }
 
@@ -26,21 +26,20 @@ public class ComparePurchase {
         return Quantity;
     }
 
-    public Float getBuyPrice() {
+    public String getBuyPrice() {
         return buyPrice;
     }
 
-    public Float getNowPrice() {
+    public String getNowPrice() {
         return nowPrice;
     }
 
-    public Float getDifference() {
+    public String getDifference() {
         return difference;
     }
 
     public String getTransactionDate() {
         return TransactionDate;
     }
-
 
 }
