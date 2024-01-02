@@ -2,7 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Wallet</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
 <h1>Wallet</h1>
@@ -15,32 +38,41 @@
 </h2>
 <br>
 <div>
-    <form action="/addInvestmentMoney" method="post">
+    <form action="/addInvestmentMoney" method="get">
         <label for="moneyInput">Enter Money:</label>
-        <input type="number" id="moneyInput" name="money" min="0.01" required>
+        <input type="number" id="moneyInput" name="moneyInput" step="any" min="0.01" required>
         <button type="submit">Submit</button>
     </form>
 </div>
-
+<br>
 <div>
-    <ul>
-        <li th:each="purchase : ${purchases}">
-            <span th:text="${purchases.Symbol}">Symbol</span>
-            <br>
-            <span th:text="${purchases.Quantity}">Quantity</span>
-            <br>
-            <span th:text="${purchases.TransactionDate}">Transaction Date</span>
-            <br>
-            <span th:text="${purchases.buyPrice}">Price when Bought</span>
-            <br>
-            <span th:text="${purchases.nowPrice}">Price Now</span>
-            <br>
-            <span th:text="${purchases.difference}">Price Difference</span>
-            <br>
-        </li>
-    </ul>
+    <h2>
+        <label>Purchases:</label>
+    </h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Quantity</th>
+            <th>Transaction Date</th>
+            <th>Price when Bought</th>
+            <th>Price Now</th>
+            <th>Price Difference</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="purchase : ${purchases}">
+            <td th:text="${purchase.Symbol}"></td>
+            <td th:text="${purchase.Quantity}"></td>
+            <td th:text="${purchase.TransactionDate}"></td>
+            <td th:text="${purchase.buyPrice}"></td>
+            <td th:text="${purchase.nowPrice}"></td>
+            <td th:text="${purchase.difference}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
+<br>
 <button onclick="location.href='/investment'">Back to Investment Page</button>
 </body>
 </html>
