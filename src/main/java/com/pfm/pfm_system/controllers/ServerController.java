@@ -186,15 +186,14 @@ public class ServerController {
     public String sellStocks(@RequestParam List<String> selectedPurchases,
                              Model model) {
         List<Sell> toSell = new ArrayList<>();
+        selectedPurchases.remove(0);
         for (String purchaseInfo : selectedPurchases) {
             String[] parts = purchaseInfo.split(",");
             String symbol = parts[0];
             String transactionDate = parts[1];
             toSell.add(new Sell(db.getUser().getPersonalID(), symbol, transactionDate));
         }
-        //For debugging purposes
-        model.addAttribute("error",new Gson().toJson(toSell));
-        //inv.sellShares(toSell);
+        inv.sellShares(toSell);
         return showInvestmentWallet(model);
     }
 
