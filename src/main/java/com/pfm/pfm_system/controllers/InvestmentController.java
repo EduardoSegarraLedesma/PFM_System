@@ -6,14 +6,12 @@ import Data.Investment.Purchase;
 import Data.Investment.Sell;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Type;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
