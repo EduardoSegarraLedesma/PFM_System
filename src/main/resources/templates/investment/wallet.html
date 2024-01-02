@@ -56,6 +56,7 @@
         <label>Purchases:</label>
     </h2>
     <form id="sell-form" action="/sellPurchases" method="POST">
+        <input type="hidden" id="selected-purchases" name="selectedPurchases">
         <table>
             <thead>
             <tr>
@@ -85,13 +86,28 @@
             </tbody>
         </table>
         <br>
-        <button type="submit">Sell Selected Purchases</button>
+        <button type="submit" onclick="sellSelectedPurchases()">Sell Selected Purchases</button>
     </form>
 </div>
 <br>
 <button onclick="location.href='/investment'">Back to Investment Page</button>
 
 <script>
+    function sellSelectedPurchases() {
+        var selectedPurchases = [];
+        var checkboxes = document.querySelectorAll('input[name="selectedPurchases"]:checked');
+
+        checkboxes.forEach(function (checkbox) {
+            selectedPurchases.push(checkbox.value);
+        });
+
+        // Set the hidden field value with selected purchases
+        document.getElementById('selected-purchases').value = JSON.stringify(selectedPurchases);
+
+        // Submit the form
+        document.getElementById('sell-form').submit();
+    }
+
     function selectAll() {
         var checkboxes = document.querySelectorAll('input[name="selectedPurchases"]');
         var selectAllCheckbox = document.getElementById('select-all');
