@@ -3,13 +3,13 @@ package Data.Investment;
 public class ComparePurchase {
 
     private final String Symbol;
-    private final int Quantity;
+    private final String Quantity;
     private final String buyPrice;
     private final String nowPrice;
     private final String difference;
     private final String TransactionDate;
 
-    public ComparePurchase(String symbol, int quantity, String buyPrice, String nowPrice, String difference, String TransactionDate) {
+    public ComparePurchase(String symbol, String quantity, String buyPrice, String nowPrice, String difference, String TransactionDate) {
         this.Symbol = symbol;
         this.Quantity = quantity;
         this.buyPrice = buyPrice;
@@ -22,7 +22,7 @@ public class ComparePurchase {
         return Symbol;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return Quantity;
     }
 
