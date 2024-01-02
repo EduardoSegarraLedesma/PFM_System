@@ -155,7 +155,7 @@ public class ServerController {
     public String showInvestmentWallet(Model model) {
         model.addAttribute("purchases", inv.getPurchases(db.getUser().getPersonalID()));
         model.addAttribute("balance", inv.getBalance());
-        return "investment/model.html";
+        return "investment/wallet.html";
     }
 
     @GetMapping("/addInvestmentMoney")
