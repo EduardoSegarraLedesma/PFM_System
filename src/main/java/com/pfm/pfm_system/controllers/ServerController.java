@@ -1,5 +1,6 @@
 package com.pfm.pfm_system.controllers;
 
+import Data.Investment.Sell;
 import Data.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ServerController {
@@ -175,6 +178,20 @@ public class ServerController {
     public String addInvestmentMoney(@RequestParam(value = "moneyInput", required = false) Float money,
                                      Model model) {
         inv.addBalance(db.getUser().getPersonalID(), money);
+        return showInvestmentWallet(model);
+    }
+
+    @PostMapping("/sellPurchases")
+    public String sellStocks(@RequestParam List<String> selectedPurchases,
+                             Model model) {
+        List<Sell> toSell = new ArrayList<>();
+        for (String purchaseInfo : selectedPurchases) {
+            String[] parts = purchaseInfo.split(",");
+            String symbol = parts[0]; // Symbol of the purchase
+            String transactionDate = parts[1].replace("T", " ");
+            toSell.add(new Sell(db.getUser().getPersonalID(), symbol, transactionDate));
+        }
+        inv.sellShares(toSell);
         return showInvestmentWallet(model);
     }
 

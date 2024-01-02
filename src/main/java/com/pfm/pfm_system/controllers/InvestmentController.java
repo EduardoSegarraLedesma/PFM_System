@@ -78,10 +78,9 @@ public class InvestmentController {
         return response;
     }
 
-    public void sellShares(String Id, String Symbol, int Quantity) {
+    public void sellShares(List<Sell> toSell) {
         String restPoint = "/sellStock/{sell}";
-        Sell sell = new Sell(Id, Symbol, Quantity);
-        ResponseEntity<String> response = GetStringForString(restPoint, new Gson().toJson(sell));
+        ResponseEntity<String> response = GetStringForString(restPoint, new Gson().toJson(toSell));
         balance = response.getBody();
     }
 

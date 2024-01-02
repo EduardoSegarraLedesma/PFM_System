@@ -25,6 +25,10 @@
         tr:hover {
             background-color: #ddd;
         }
+
+        .checkbox-cell {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -48,30 +52,46 @@
     <h2>
         <label>Purchases:</label>
     </h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Symbol</th>
-            <th>Quantity</th>
-            <th>Transaction Date</th>
-            <th>Price when Bought</th>
-            <th>Price Now</th>
-            <th>Price Difference</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="purchase : ${purchases}">
-            <td th:text="${purchase.Symbol}"></td>
-            <td th:text="${purchase.Quantity}"></td>
-            <td th:text="${purchase.TransactionDate}"></td>
-            <td th:text="${purchase.buyPrice}"></td>
-            <td th:text="${purchase.nowPrice}"></td>
-            <td th:text="${purchase.difference}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <form id="sell-form" action="/sellPurchases" method="POST">
+        <table>
+            <thead>
+            <tr>
+                <th class="checkbox-cell"><input type="checkbox" id="select-all" onchange="selectAll()"></th>
+                <th>Symbol</th>
+                <th>Quantity</th>
+                <th>Transaction Date</th>
+                <th>Price when Bought</th>
+                <th>Price Now</th>
+                <th>Price Difference</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="purchase : ${purchases}">
+                <td class="checkbox-cell"><input type="checkbox" name="selectedPurchases" th:value="${purchase.Symbol + ',' + purchase.TransactionDate}"></td>
+                <td th:text="${purchase.Symbol}"></td>
+                <td th:text="${purchase.Quantity}"></td>
+                <td th:text="${purchase.TransactionDate}"></td>
+                <td th:text="${purchase.buyPrice}"></td>
+                <td th:text="${purchase.nowPrice}"></td>
+                <td th:text="${purchase.difference}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <button type="submit">Sell Selected Purchases</button>
+    </form>
 </div>
 <br>
 <button onclick="location.href='/investment'">Back to Investment Page</button>
+
+<script>
+    function selectAll() {
+        var checkboxes = document.querySelectorAll('input[name="selectedPurchases"]');
+        var selectAllCheckbox = document.getElementById('select-all');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
+</script>
 </body>
 </html>
