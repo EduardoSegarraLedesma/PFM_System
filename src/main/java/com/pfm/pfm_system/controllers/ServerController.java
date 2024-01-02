@@ -2,6 +2,7 @@ package com.pfm.pfm_system.controllers;
 
 import Data.Investment.Sell;
 import Data.User;
+import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -191,7 +192,9 @@ public class ServerController {
             String transactionDate = parts[1];
             toSell.add(new Sell(db.getUser().getPersonalID(), symbol, transactionDate));
         }
-        inv.sellShares(toSell);
+        //For debugging purposes
+        model.addAttribute("error",new Gson().toJson(toSell));
+        //inv.sellShares(toSell);
         return showInvestmentWallet(model);
     }
 

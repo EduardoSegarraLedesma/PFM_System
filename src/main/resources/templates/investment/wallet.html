@@ -49,6 +49,8 @@
 </div>
 <br>
 <div>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
     <h2>
         <label>Purchases:</label>
     </h2>
