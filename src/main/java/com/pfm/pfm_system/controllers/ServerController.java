@@ -193,7 +193,8 @@ public class ServerController {
             String transactionDate = parts[1];
             toSell.add(new Sell(db.getUser().getPersonalID(), symbol, transactionDate));
         }
-        inv.sellShares(toSell);
+        model.addAttribute("error", new Gson().toJson(toSell));
+        //inv.sellShares(toSell);
         return showInvestmentWallet(model);
     }
 
