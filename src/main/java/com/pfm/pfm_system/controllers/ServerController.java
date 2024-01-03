@@ -190,8 +190,9 @@ public class ServerController {
         for (String purchaseInfo : selectedPurchases) {
             String[] parts = purchaseInfo.split(",");
             String symbol = parts[0];
-            String transactionDate = parts[1];
-            toSell.add(new Sell(db.getUser().getPersonalID(), symbol, transactionDate));
+            int quantity = Integer.parseInt(parts[1]);
+            String transactionDate = parts[2];
+            toSell.add(new Sell(db.getUser().getPersonalID(), symbol, quantity, transactionDate));
         }
         model.addAttribute("error", new Gson().toJson(toSell));
         //inv.sellShares(toSell);
