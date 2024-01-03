@@ -185,7 +185,7 @@ public class ServerController {
     @PostMapping("/sellPurchases")
     public String sellStocks(@RequestParam List<String> selectedPurchases,
                              Model model) {
-        if (!selectedPurchases.isEmpty()) {
+        if (!selectedPurchases.isEmpty() && selectedPurchases.stream().anyMatch(s -> !s.isEmpty())) {
             List<Sell> toSell = new ArrayList<>();
             selectedPurchases.remove(0);
             for (String purchaseInfo : selectedPurchases) {
