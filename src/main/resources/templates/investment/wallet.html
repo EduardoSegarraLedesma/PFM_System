@@ -73,7 +73,7 @@
             <tr th:each="purchase, rowStat : ${purchases}">
                 <td class="checkbox-cell">
                     <input type="checkbox" name="selectedPurchases"
-                           th:value="${purchase.Symbol + ',' + ${purchase.Quantity} + ',' + purchase.TransactionDate}"
+                           th:value="${purchase.Symbol + ',' + purchase.Quantity + ',' + purchase.TransactionDate}"
                            id="checkbox-${rowStat.index}">
                 </td>
                 <td th:text="${purchase.Symbol}"></td>
