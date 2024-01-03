@@ -194,8 +194,7 @@ public class ServerController {
             String transactionDate = parts[2];
             toSell.add(new Sell(db.getUser().getPersonalID(), symbol, quantity, transactionDate));
         }
-        model.addAttribute("error", new Gson().toJson(toSell));
-        //inv.sellShares(toSell);
+        inv.sellShares(toSell);
         return showInvestmentWallet(model);
     }
 
