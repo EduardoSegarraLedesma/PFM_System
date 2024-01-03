@@ -86,7 +86,7 @@
             </tbody>
         </table>
         <br>
-        <button type="submit" onclick="sellSelectedPurchases()">Sell Selected Purchases</button>
+        <button type="button" onclick="sellSelectedPurchases()">Sell Selected Purchases</button>
     </form>
 </div>
 <br>
@@ -100,6 +100,11 @@
         checkboxes.forEach(function (checkbox) {
             selectedPurchases.push(checkbox.value);
         });
+
+        if (selectedPurchases.length === 0) {
+            alert("Please select at least one purchase to sell.");
+            return; // Prevent form submission if no checkboxes are selected
+        }
 
         // Set the hidden field value with selected purchases
         document.getElementById('selected-purchases').value = JSON.stringify(selectedPurchases);
