@@ -185,16 +185,18 @@ public class ServerController {
     @PostMapping("/sellPurchases")
     public String sellStocks(@RequestParam List<String> selectedPurchases,
                              Model model) {
-        List<Sell> toSell = new ArrayList<>();
-        selectedPurchases.remove(0);
-        for (String purchaseInfo : selectedPurchases) {
-            String[] parts = purchaseInfo.split(",");
-            String symbol = parts[0];
-            int quantity = Integer.parseInt(parts[1]);
-            String transactionDate = parts[2];
-            toSell.add(new Sell(db.getUser().getPersonalID(), symbol, quantity, transactionDate));
+        if (!selectedPurchases.isEmpty()) {
+            List<Sell> toSell = new ArrayList<>();
+            selectedPurchases.remove(0);
+            for (String purchaseInfo : selectedPurchases) {
+                String[] parts = purchaseInfo.split(",");
+                String symbol = parts[0];
+                int quantity = Integer.parseInt(parts[1]);
+                String transactionDate = parts[2];
+                toSell.add(new Sell(db.getUser().getPersonalID(), symbol, quantity, transactionDate));
+            }
+            inv.sellShares(toSell);
         }
-        inv.sellShares(toSell);
         return showInvestmentWallet(model);
     }
 
