@@ -24,10 +24,51 @@
             margin-top: 80px;
             margin-left: 20%;
         }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <h1>Financial Goals List</h1>
+<div class="right-panel">
+    <div id="username"><h2><span th:text="${userName}"></span></h2></div>
+</div>
 <br>
 <button onclick="window.location.href='/mainPage'">Go back to main page</button>
 <div class="container">
@@ -59,9 +100,12 @@
                 <td>
                     <!-- Add your edit and delete buttons here -->
                     <!-- Example Edit Button -->
-                    <a th:href="@{'/edit/' + ${goal.goalId}}" class="btn btn-primary btn-sm">Edit</a>
+                    <button class="btn btn-primary btn-sm" onclick="openEditModal(${goal})">Edit</button>
                     <!-- Example Delete Button -->
-                    <a th:href="@{'/delete/' + ${goal.goalId}}" class="btn btn-danger btn-sm">Delete</a>
+                    <form action="/deleteGoal" method="post">
+                        <input type="hidden" name="goalId" th:value="${goal.goalId}"/>
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
             </tbody>
@@ -94,5 +138,91 @@
         </form>
     </div>
 </div>
+<!-- Edit Goal Modal -->
+<div id="editGoalModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form action="/updateGoal" method="post" onsubmit="return validateAndUpdateGoal()">
+            <input type="hidden" id="editGoalId" name="goalId">
+
+            <div class="form-group">
+                <label for="editDescription">Description:</label>
+                <input type="text" class="form-control" id="editDescription" name="description">
+            </div>
+
+            <div class="form-group">
+                <label for="editTargetAmount">Target Amount:</label>
+                <input type="number" class="form-control" id="editTargetAmount" name="targetAmount" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="editCurrentAmount">Current Amount:</label>
+                <input type="number" class="form-control" id="editCurrentAmount" name="currentAmount" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="editStartDate">Start Date:</label>
+                <input type="date" class="form-control" id="editStartDate" name="startDate">
+            </div>
+
+            <div class="form-group">
+                <label for="editEndDate">End Date:</label>
+                <input type="date" class="form-control" id="editEndDate" name="endDate">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
 </body>
+<script>
+    function openEditModal(goal) {
+        // Populate the modal fields with the goal's current data
+        document.getElementById('editGoalId').value = goal.goalId;
+        document.getElementById('editDescription').value = goal.description;
+        document.getElementById('editTargetAmount').value = goal.targetAmount;
+        document.getElementById('editCurrentAmount').value = goal.currentAmount;
+        document.getElementById('editStartDate').value = formatDate(goal.startDate);
+        document.getElementById('editEndDate').value = formatDate(goal.endDate);
+
+        // Display the modal
+        document.getElementById('editGoalModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('editGoalModal').style.display = 'none';
+    }
+
+    // Additional function to format dates to 'YYYY-MM-DD'
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    // Function to validate form before submission
+    function validateAndUpdateGoal() {
+        var description = document.getElementById('editDescription').value;
+        var targetAmount = document.getElementById('editTargetAmount').value;
+        var currentAmount = document.getElementById('editCurrentAmount').value;
+        var startDate = document.getElementById('editStartDate').value;
+        var endDate = document.getElementById('editEndDate').value;
+
+        // Check if all fields are empty
+        if (!description && !targetAmount && !currentAmount && !startDate && !endDate) {
+            // Close the modal and do not submit
+            closeModal();
+            return false;
+        }
+
+        // Proceed with form submission
+        return true;
+    }
+</script>
 </html>
