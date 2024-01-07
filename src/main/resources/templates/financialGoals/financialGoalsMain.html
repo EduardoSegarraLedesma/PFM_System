@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Financial Goals</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .goals-list {
+            width: 50%;
+            margin-top: 50px;
+            margin-right: 10%;
+        }
+
+        .form-container {
+            width: 38%;
+            margin-top: 80px;
+            margin-left: 20%;
+        }
+    </style>
+</head>
+<body>
+<h1>Financial Goals List</h1>
+<br>
+<button onclick="window.location.href='/mainPage'">Go back to main page</button>
+<div class="container">
+    <!-- Left Section: Display Goals List -->
+    <div class="goals-list">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>GoalID</th>
+                <th>UserID</th>
+                <th>Description</th>
+                <th>TargetAmount</th>
+                <th>CurrentAmount</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Use Thymeleaf to iterate over goalsList and populate the table -->
+            <tr th:each="goal : ${goalsList}">
+                <td th:text="${goal.goalId}"></td>
+                <td th:text="${goal.userId}"></td>
+                <td th:text="${goal.description}"></td>
+                <td th:text="${goal.targetAmount}"></td>
+                <td th:text="${goal.currentAmount}"></td>
+                <td th:text="${#dates.format(goal.startDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(goal.endDate, 'yyyy-MM-dd')}"></td>
+                <td>
+                    <!-- Add your edit and delete buttons here -->
+                    <!-- Example Edit Button -->
+                    <a th:href="@{'/edit/' + ${goal.goalId}}" class="btn btn-primary btn-sm">Edit</a>
+                    <!-- Example Delete Button -->
+                    <a th:href="@{'/delete/' + ${goal.goalId}}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Right Section: New Goal Input Form -->
+    <div class="form-container">
+        <form action="/createGoal" method="post">
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" class="form-control" id="description" name="description">
+            </div>
+            <div class="form-group">
+                <label for="targetAmount">Target Amount:</label>
+                <input type="number" class="form-control" id="targetAmount" name="targetAmount" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="currentAmount">Current Amount:</label>
+                <input type="number" class="form-control" id="currentAmount" name="currentAmount" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" class="form-control" id="startDate" name="startDate">
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" class="form-control" id="endDate" name="endDate">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

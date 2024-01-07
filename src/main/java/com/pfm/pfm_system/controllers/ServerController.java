@@ -1,8 +1,11 @@
 package com.pfm.pfm_system.controllers;
 
+import Data.Budget.FinancialGoal;
+import Data.Investment.Company;
 import Data.Investment.Sell;
 import Data.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.List;
 public class ServerController {
     private final PersistenceController db = PersistenceController.getInstance();
     private final InvestmentController inv = InvestmentController.getInstance();
+
+    private final FinancialGoalsController fg = FinancialGoalsController.getInstance();
 
     // ------------------------ Home Page ------------------------ //
 
@@ -198,6 +204,54 @@ public class ServerController {
         return showInvestmentWallet(model);
     }
 
-    // ------------------------  Other Microservices ------------------------ //
+    // ------------------------  FinancialGoals Microservice ------------------------ //
+
+    @GetMapping("/financialGoals")
+    public String showFinancialGoalsPage(Model model) {
+        model.addAttribute("userName", db.getUser().getUserName());
+        //Data for testing
+        String dummy = "[\n" +
+                "    {\n" +
+                "        \"goalId\": 1,\n" +
+                "        \"userId\": \"user123\",\n" +
+                "        \"description\": \"Save for vacation\",\n" +
+                "        \"targetAmount\": 10000.0,\n" +
+                "        \"currentAmount\": 2500.0,\n" +
+                "        \"startDate\": \"2024-01-07\",\n" +
+                "        \"endDate\": \"2025-01-06\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"goalId\": 2,\n" +
+                "        \"userId\": \"user456\",\n" +
+                "        \"description\": \"Emergency fund\",\n" +
+                "        \"targetAmount\": 5000.0,\n" +
+                "        \"currentAmount\": 1200.0,\n" +
+                "        \"startDate\": \"2024-02-01\",\n" +
+                "        \"endDate\": \"2024-12-31\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"goalId\": 3,\n" +
+                "        \"userId\": \"user789\",\n" +
+                "        \"description\": \"Home renovation\",\n" +
+                "        \"targetAmount\": 20000.0,\n" +
+                "        \"currentAmount\": 8000.0,\n" +
+                "        \"startDate\": \"2024-03-15\",\n" +
+                "        \"endDate\": \"2025-03-14\"\n" +
+                "    }\n" +
+                "]\n";
+        Type GoalsList = new TypeToken<ArrayList<FinancialGoal>>() {
+        }.getType();
+        model.addAttribute("goalsList", new Gson().fromJson(dummy, GoalsList));
+
+        return "financialGoals/financialGoalsMain.html";
+    }
+
+    @GetMapping("/createGoal")
+    public String createGoal(Model model) {
+
+
+        return showFinancialGoalsPage(model);
+    }
+
 
 }
