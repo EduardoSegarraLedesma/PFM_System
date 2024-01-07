@@ -206,7 +206,7 @@ public class ServerController {
     @GetMapping("/financialGoals")
     public String showFinancialGoalsPage(Model model) {
         model.addAttribute("userName", db.getUser().getUserName());
-        model.addAttribute("GoalsList", fg.obtainGoals(db.getUser().getPersonalID()));
+        model.addAttribute("goalsList", fg.obtainGoals(db.getUser().getPersonalID()));
         return "financialGoals/financialGoalsMain.html";
     }
 

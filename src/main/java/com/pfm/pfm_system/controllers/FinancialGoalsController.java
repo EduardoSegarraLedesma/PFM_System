@@ -56,35 +56,38 @@ public class FinancialGoalsController {
         }.getType();
         //ResponseEntity<String> response = GetStringForString(restPoint, userId);
         //Data for testing
-        String response = "[\n" +
-                "    {\n" +
-                "        \"goalId\": 1,\n" +
-                "        \"userId\": \"user123\",\n" +
-                "        \"description\": \"Save for vacation\",\n" +
-                "        \"targetAmount\": 10000.0,\n" +
-                "        \"currentAmount\": 2500.0,\n" +
-                "        \"startDate\": \"2024-01-07\",\n" +
-                "        \"endDate\": \"2025-01-06\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"goalId\": 2,\n" +
-                "        \"userId\": \"user456\",\n" +
-                "        \"description\": \"Emergency fund\",\n" +
-                "        \"targetAmount\": 5000.0,\n" +
-                "        \"currentAmount\": 1200.0,\n" +
-                "        \"startDate\": \"2024-02-01\",\n" +
-                "        \"endDate\": \"2024-12-31\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"goalId\": 3,\n" +
-                "        \"userId\": \"user789\",\n" +
-                "        \"description\": \"Home renovation\",\n" +
-                "        \"targetAmount\": 20000.0,\n" +
-                "        \"currentAmount\": 8000.0,\n" +
-                "        \"startDate\": \"2024-03-15\",\n" +
-                "        \"endDate\": \"2025-03-14\"\n" +
-                "    }\n" +
-                "]\n";
+        String response =
+                        """
+                        [
+                            {
+                                "goalId": 1,
+                                "userId": "user123",
+                                "description": "Save for vacation",
+                                "targetAmount": 10000.0,
+                                "currentAmount": 2500.0,
+                                "startDate": "2024-01-07",
+                                "endDate": "2025-01-06"
+                            },
+                            {
+                                "goalId": 2,
+                                "userId": "user456",
+                                "description": "Emergency fund",
+                                "targetAmount": 5000.0,
+                                "currentAmount": 1200.0,
+                                "startDate": "2024-02-01",
+                                "endDate": "2024-12-31"
+                            },
+                            {
+                                "goalId": 3,
+                                "userId": "user789",
+                                "description": "Home renovation",
+                                "targetAmount": 20000.0,
+                                "currentAmount": 8000.0,
+                                "startDate": "2024-03-15",
+                                "endDate": "2025-03-14"
+                            }
+                        ]
+                        """;
         return new Gson().fromJson(response, GoalsList);
     }
 
