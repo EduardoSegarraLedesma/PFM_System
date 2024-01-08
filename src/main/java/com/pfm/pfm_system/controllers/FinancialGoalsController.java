@@ -32,30 +32,30 @@ public class FinancialGoalsController {
     public void createGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            Date startDate, Date endDate) {
-        String restPoint = "/insertGoal";
+        String restPoint = "/insertGoal/{goal}";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
-        PostString(restPoint, new Gson().toJson(fgoal));
+        GetString(restPoint, new Gson().toJson(fgoal));
     }
 
     public void updateGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            Date startDate, Date endDate) {
-        String restPoint = "/editGoal";
+        String restPoint = "/editGoal/{goal}";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
-        PostString(restPoint, new Gson().toJson(fgoal));
+        GetString(restPoint, new Gson().toJson(fgoal));
     }
 
     public void deleteGoal(Integer goalId, String userId) {
-        String restPoint = "/deleteGoal";
+        String restPoint = "/deleteGoal/{Ids}";
         List<String> IdList = new LinkedList<>();
         IdList.add(goalId.toString());
         IdList.add(userId);
-        PostString(restPoint, new Gson().toJson(IdList));
+        GetString(restPoint, new Gson().toJson(IdList));
     }
 
     public void deleteAll(String userId) {
-        String restPoint = "/deleteAll";
-        PostString(restPoint, userId);
+        String restPoint = "/deleteAll/{Id}";
+        GetString(restPoint, userId);
     }
 
     public List<FinancialGoal> obtainGoals(String userId) {
@@ -102,8 +102,8 @@ public class FinancialGoalsController {
 
     // ----------------- SUPPORT METHODS ----------------- //
 
-    private ResponseEntity<String> PostString(String restPoint, String obj) {
-        return new RestTemplate().postForEntity(api + restPoint, obj, String.class);
+    private ResponseEntity<String> GetString(String restPoint, String obj) {
+        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
     }
 
     private ResponseEntity<String> GetStringForString(String restPoint, String obj) {

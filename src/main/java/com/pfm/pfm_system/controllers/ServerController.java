@@ -231,7 +231,8 @@ public class ServerController {
                              @RequestParam("startDate") Date startDate,
                              @RequestParam("endDate") Date endDate,
                              Model model) {
-
+        fg.updateGoal(goalId, db.getUser().getPersonalID(), description,
+                targetAmount, currentAmount, startDate, endDate);
         return showFinancialGoalsPage(model);
     }
 
