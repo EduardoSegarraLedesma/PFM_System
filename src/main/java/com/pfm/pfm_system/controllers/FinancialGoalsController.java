@@ -33,25 +33,25 @@ public class FinancialGoalsController {
         String restPoint = "/insertGoal/{goal}";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount,
                 currentAmount, startDate, endDate);
-        return GetString(restPoint, new Gson().toJson(fgoal));
+        return GetStringForString(restPoint, new Gson().toJson(fgoal));
     }
 
-    public ResponseEntity<String>  updateGoal(Integer goalId, String userId, String description,
-                           BigDecimal targetAmount, BigDecimal currentAmount,
-                           String startDate, String endDate) {
+    public ResponseEntity<String> updateGoal(Integer goalId, String userId, String description,
+                                             BigDecimal targetAmount, BigDecimal currentAmount,
+                                             String startDate, String endDate) {
         String restPoint = "/editGoal/{goal}";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
-        return GetString(restPoint, new Gson().toJson(fgoal));
+        return GetStringForString(restPoint, new Gson().toJson(fgoal));
     }
 
     public ResponseEntity<String> deleteGoal(Integer goalId) {
         String restPoint = "/deleteGoal/{goal}";
-        return GetString(restPoint, new Gson().toJson(searchGoalById(goalId)));
+        return GetStringForString(restPoint, new Gson().toJson(searchGoalById(goalId)));
     }
 
     public void deleteAll(String userId) {
         String restPoint = "/deleteAll/{Id}";
-        GetString(restPoint, userId);
+        GetStringForString(restPoint, userId);
     }
 
     public List<FinancialGoal> obtainGoals(String userId) {
@@ -73,10 +73,6 @@ public class FinancialGoalsController {
     }
 
     // ----------------- SUPPORT METHODS ----------------- //
-
-    private ResponseEntity<String> GetString(String restPoint, String obj) {
-        return new RestTemplate().getForEntity(api + restPoint, String.class, obj);
-    }
 
     private ResponseEntity<String> GetStringForString(String restPoint, String obj) {
         return new RestTemplate().getForEntity(api + restPoint, String.class, obj);

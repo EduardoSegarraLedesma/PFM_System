@@ -169,7 +169,7 @@ public class ServerController {
     }
 
     @PostMapping("/buyStocks")
-    public String buyStocks(@RequestParam("ignoredName") String ignoredName,
+    public String buyStocks(@RequestParam("name") String name,
                             @RequestParam("amount") int amount,
                             @RequestParam("companyCode") String companyCode,
                             Model model) {
