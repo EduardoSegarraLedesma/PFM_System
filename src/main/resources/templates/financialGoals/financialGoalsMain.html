@@ -44,7 +44,6 @@
             <thead>
             <tr>
                 <th>GoalID</th>
-                <th>UserID</th>
                 <th>Description</th>
                 <th>TargetAmount</th>
                 <th>CurrentAmount</th>
@@ -57,7 +56,6 @@
             <!-- Use Thymeleaf to iterate over goalsList and populate the table -->
             <tr th:each="goal : ${goals}">
                 <td th:text="${goal.goalId}"></td>
-                <td th:text="${goal.userId}"></td>
                 <td th:text="${goal.description}"></td>
                 <td th:text="${goal.targetAmount}"></td>
                 <td th:text="${goal.currentAmount}"></td>
