@@ -9,12 +9,12 @@ public class FinancialGoal {
     private String description;
     private BigDecimal targetAmount;
     private BigDecimal currentAmount;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
 
     public FinancialGoal(Integer goalId, String userId, String description,
                          BigDecimal targetAmount, BigDecimal currentAmount,
-                         Date startDate, Date endDate) {
+                         String startDate, String endDate) {
         this.goalId = goalId;
         this.userId = userId;
         this.description = description;
@@ -45,11 +45,11 @@ public class FinancialGoal {
         return currentAmount;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 

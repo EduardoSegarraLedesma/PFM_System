@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -33,7 +34,9 @@ public class FinancialGoalsController {
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            Date startDate, Date endDate) {
         String restPoint = "/insertGoal/{goal}";
-        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount,
+                currentAmount, dateFormat.format(startDate), dateFormat.format(endDate));
         GetString(restPoint, new Gson().toJson(fgoal));
     }
 
@@ -41,7 +44,8 @@ public class FinancialGoalsController {
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            Date startDate, Date endDate) {
         String restPoint = "/editGoal/{goal}";
-        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, dateFormat.format(startDate), dateFormat.format(endDate));
         GetString(restPoint, new Gson().toJson(fgoal));
     }
 
@@ -63,40 +67,6 @@ public class FinancialGoalsController {
         Type GoalsList = new TypeToken<ArrayList<FinancialGoal>>() {
         }.getType();
         ResponseEntity<String> response = GetStringForString(restPoint, userId);
-        //Data for testing
-        /*String response =
-                        """
-                        [
-                            {
-                                "goalId": 1,
-                                "userId": "user123",
-                                "description": "Save for vacation",
-                                "targetAmount": 10000.0,
-                                "currentAmount": 2500.0,
-                                "startDate": "2024-01-07",
-                                "endDate": "2025-01-06"
-                            },
-                            {
-                                "goalId": 2,
-                                "userId": "user456",
-                                "description": "Emergency fund",
-                                "targetAmount": 5000.0,
-                                "currentAmount": 1200.0,
-                                "startDate": "2024-02-01",
-                                "endDate": "2024-12-31"
-                            },
-                            {
-                                "goalId": 3,
-                                "userId": "user789",
-                                "description": "Home renovation",
-                                "targetAmount": 20000.0,
-                                "currentAmount": 8000.0,
-                                "startDate": "2024-03-15",
-                                "endDate": "2025-03-14"
-                            }
-                        ]
-                        """;
-         */
         return new Gson().fromJson(response.getBody(), GoalsList);
     }
 

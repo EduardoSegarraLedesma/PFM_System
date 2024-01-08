@@ -89,7 +89,7 @@
             </thead>
             <tbody>
             <!-- Use Thymeleaf to iterate over goalsList and populate the table -->
-            <tr th:each="goal : ${goalsList}">
+            <tr th:each="goal : ${goals}">
                 <td th:text="${goal.goalId}"></td>
                 <td th:text="${goal.userId}"></td>
                 <td th:text="${goal.description}"></td>
