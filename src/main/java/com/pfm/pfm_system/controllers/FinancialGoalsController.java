@@ -32,29 +32,24 @@ public class FinancialGoalsController {
 
     public void createGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
-                           Date startDate, Date endDate) {
+                           String startDate, String endDate) {
         String restPoint = "/insertGoal/{goal}";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount,
-                currentAmount, dateFormat.format(startDate), dateFormat.format(endDate));
+                currentAmount, startDate, endDate);
         GetString(restPoint, new Gson().toJson(fgoal));
     }
 
     public void updateGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
-                           Date startDate, Date endDate) {
+                           String startDate, String endDate) {
         String restPoint = "/editGoal/{goal}";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, dateFormat.format(startDate), dateFormat.format(endDate));
+        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
         GetString(restPoint, new Gson().toJson(fgoal));
     }
 
-    public void deleteGoal(Integer goalId, String userId) {
-        String restPoint = "/deleteGoal/{Ids}";
-        List<String> IdList = new LinkedList<>();
-        IdList.add(goalId.toString());
-        IdList.add(userId);
-        GetString(restPoint, new Gson().toJson(IdList));
+    public void deleteGoal(Integer goalId) {
+        String restPoint = "/deleteGoal/{goal}";
+        GetString(restPoint, new Gson().toJson(searchGoalById(goalId)));
     }
 
     public void deleteAll(String userId) {

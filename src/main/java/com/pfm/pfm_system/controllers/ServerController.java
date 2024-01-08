@@ -1,9 +1,7 @@
 package com.pfm.pfm_system.controllers;
 
-import Data.Budget.FinancialGoal;
 import Data.Investment.Sell;
 import Data.User;
-import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -172,7 +168,7 @@ public class ServerController {
     }
 
     @PostMapping("/buyStocks")
-    public String buyStocks(@RequestParam("name") String name,
+    public String buyStocks(@RequestParam("ignoredName") String ignoredName,
                             @RequestParam("amount") int amount,
                             @RequestParam("companyCode") String companyCode,
                             Model model) {
@@ -221,11 +217,8 @@ public class ServerController {
                              @RequestParam("startDate") String startDate,
                              @RequestParam("endDate") String endDate,
                              Model model) {
-        //fg.createGoal(0, db.getUser().getPersonalID(), description,
-        //targetAmount, currentAmount, startDate, endDate);
-        FinancialGoal fgoal = new FinancialGoal(0, db.getUser().getPersonalID(), description, targetAmount,
-                currentAmount, startDate, endDate);
-        model.addAttribute("error", new Gson().toJson(fgoal));
+        fg.createGoal(0, db.getUser().getPersonalID(), description,
+                targetAmount, currentAmount, startDate, endDate);
         return showFinancialGoalsPage(model);
     }
 
@@ -241,8 +234,8 @@ public class ServerController {
                              @RequestParam("description") String description,
                              @RequestParam("targetAmount") BigDecimal targetAmount,
                              @RequestParam("currentAmount") BigDecimal currentAmount,
-                             @RequestParam("startDate") Date startDate,
-                             @RequestParam("endDate") Date endDate,
+                             @RequestParam("startDate") String startDate,
+                             @RequestParam("endDate") String endDate,
                              Model model) {
         fg.updateGoal(goalId, db.getUser().getPersonalID(), description,
                 targetAmount, currentAmount, startDate, endDate);
@@ -252,7 +245,7 @@ public class ServerController {
     @PostMapping("/deleteGoal")
     public String deleteGoal(@RequestParam("goalId") int goalId,
                              Model model) {
-        fg.deleteGoal(goalId, db.getUser().getPersonalID());
+        fg.deleteGoal(goalId);
         return showFinancialGoalsPage(model);
     }
 
