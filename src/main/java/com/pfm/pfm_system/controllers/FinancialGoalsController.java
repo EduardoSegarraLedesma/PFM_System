@@ -17,7 +17,7 @@ import java.util.List;
 public class FinancialGoalsController {
 
     private static String api = null;
-
+    private List<FinancialGoal> fglist = null;
     private static FinancialGoalsController instance = null;
 
     private FinancialGoalsController() {
@@ -67,7 +67,17 @@ public class FinancialGoalsController {
         Type GoalsList = new TypeToken<ArrayList<FinancialGoal>>() {
         }.getType();
         ResponseEntity<String> response = GetStringForString(restPoint, userId);
-        return new Gson().fromJson(response.getBody(), GoalsList);
+        fglist = new Gson().fromJson(response.getBody(), GoalsList);
+        return fglist;
+    }
+
+    public FinancialGoal searchGoalById(int goalId) {
+        for (FinancialGoal goal : fglist) {
+            if (goal.getGoalId() == goalId) {
+                return goal;
+            }
+        }
+        return null;
     }
 
     // ----------------- SUPPORT METHODS ----------------- //

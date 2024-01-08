@@ -223,6 +223,13 @@ public class ServerController {
         return showFinancialGoalsPage(model);
     }
 
+    @GetMapping("/editGoal")
+    public String showEditGoalPage(@RequestParam("goalId") int goalId,
+                                   Model model) {
+        model.addAttribute("goal", fg.searchGoalById(goalId));
+        return "financialGoals/modifyGoal.html";
+    }
+
     @PostMapping("/updateGoal")
     public String updateGoal(@RequestParam("goalId") int goalId,
                              @RequestParam("description") String description,

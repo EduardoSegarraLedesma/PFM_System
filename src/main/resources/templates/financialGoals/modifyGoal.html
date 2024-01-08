@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Financial Goal</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1>Edit Financial Goal</h1>
+<div class="container">
+    <form action="/updateGoal" method="post">
+        <div class="form-group">
+            <label for="goalId">Goal ID:</label>
+            <input type="text" class="form-control" id="goalId" name="goalId" th:value="${goal.goalId}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" name="description" th:value="${goal.description}">
+        </div>
+
+        <div class="form-group">
+            <label for="targetAmount">Target Amount:</label>
+            <input type="number" class="form-control" id="targetAmount" name="targetAmount" step="0.01" th:value="${goal.targetAmount}">
+        </div>
+
+        <div class="form-group">
+            <label for="currentAmount">Current Amount:</label>
+            <input type="number" class="form-control" id="currentAmount" name="currentAmount" step="0.01" th:value="${goal.currentAmount}">
+        </div>
+
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="text" class="form-control" id="startDate" name="startDate" th:value="${goal.startDate}">
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="text" class="form-control" id="endDate" name="endDate" th:value="${goal.endDate}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+    <br>
+    <button onClick="window.location.href='/mainPage'">Go back to main page</button>
+</div>
+</body>
+</html>
