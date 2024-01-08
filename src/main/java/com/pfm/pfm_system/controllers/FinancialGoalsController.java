@@ -27,11 +27,11 @@ public class FinancialGoalsController {
         return instance;
     }
 
-    public ResponseEntity<String> createGoal(Integer goalId, String userId, String description,
+    public ResponseEntity<String> createGoal( String userId, String description,
                                              BigDecimal targetAmount, BigDecimal currentAmount,
                                              String startDate, String endDate) {
         String restPoint = "/insertGoal/{goal}";
-        FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount,
+        FinancialGoal fgoal = new FinancialGoal(1, userId, description, targetAmount,
                 currentAmount, startDate, endDate);
         return GetStringForString(restPoint, new Gson().toJson(fgoal));
     }

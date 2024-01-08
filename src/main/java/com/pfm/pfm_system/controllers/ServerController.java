@@ -218,11 +218,13 @@ public class ServerController {
                              @RequestParam("startDate") String startDate,
                              @RequestParam("endDate") String endDate,
                              Model model) {
-        ResponseEntity<String> response = fg.createGoal(0, db.getUser().getPersonalID(), description,
+        ResponseEntity<String> response = fg.createGoal(db.getUser().getPersonalID(), description,
                 targetAmount, currentAmount, startDate, endDate);
         if (response.getStatusCode() == HttpStatus.BAD_REQUEST)
             model.addAttribute("error", "Unable to create goal, please try later");
-        return showFinancialGoalsPage(model);
+        model.addAttribute("userName", db.getUser().getUserName());
+        model.addAttribute("goals", fg.obtainGoals(db.getUser().getPersonalID()));
+        return "financialGoals/financialGoalsMain.html";
     }
 
     @GetMapping("/editGoal")
