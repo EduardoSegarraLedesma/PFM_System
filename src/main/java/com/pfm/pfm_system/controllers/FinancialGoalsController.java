@@ -8,10 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FinancialGoalsController {
@@ -30,26 +27,26 @@ public class FinancialGoalsController {
         return instance;
     }
 
-    public void createGoal(Integer goalId, String userId, String description,
-                           BigDecimal targetAmount, BigDecimal currentAmount,
-                           String startDate, String endDate) {
+    public ResponseEntity<String> createGoal(Integer goalId, String userId, String description,
+                                             BigDecimal targetAmount, BigDecimal currentAmount,
+                                             String startDate, String endDate) {
         String restPoint = "/insertGoal/{goal}";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount,
                 currentAmount, startDate, endDate);
-        GetString(restPoint, new Gson().toJson(fgoal));
+        return GetString(restPoint, new Gson().toJson(fgoal));
     }
 
-    public void updateGoal(Integer goalId, String userId, String description,
+    public ResponseEntity<String>  updateGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            String startDate, String endDate) {
         String restPoint = "/editGoal/{goal}";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
-        GetString(restPoint, new Gson().toJson(fgoal));
+        return GetString(restPoint, new Gson().toJson(fgoal));
     }
 
-    public void deleteGoal(Integer goalId) {
+    public ResponseEntity<String> deleteGoal(Integer goalId) {
         String restPoint = "/deleteGoal/{goal}";
-        GetString(restPoint, new Gson().toJson(searchGoalById(goalId)));
+        return GetString(restPoint, new Gson().toJson(searchGoalById(goalId)));
     }
 
     public void deleteAll(String userId) {

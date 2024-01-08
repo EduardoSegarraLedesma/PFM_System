@@ -2,6 +2,7 @@ package com.pfm.pfm_system.controllers;
 
 import Data.Investment.Sell;
 import Data.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -217,8 +218,10 @@ public class ServerController {
                              @RequestParam("startDate") String startDate,
                              @RequestParam("endDate") String endDate,
                              Model model) {
-        fg.createGoal(0, db.getUser().getPersonalID(), description,
+        ResponseEntity<String> response = fg.createGoal(0, db.getUser().getPersonalID(), description,
                 targetAmount, currentAmount, startDate, endDate);
+        if (response.getStatusCode() == HttpStatus.BAD_REQUEST)
+            model.addAttribute("error", "Unable to create goal, please try later");
         return showFinancialGoalsPage(model);
     }
 
@@ -237,15 +240,19 @@ public class ServerController {
                              @RequestParam("startDate") String startDate,
                              @RequestParam("endDate") String endDate,
                              Model model) {
-        fg.updateGoal(goalId, db.getUser().getPersonalID(), description,
+        ResponseEntity<String> response = fg.updateGoal(goalId, db.getUser().getPersonalID(), description,
                 targetAmount, currentAmount, startDate, endDate);
+        if (response.getStatusCode() == HttpStatus.BAD_REQUEST)
+            model.addAttribute("error", "Unable to update goal, please try later");
         return showFinancialGoalsPage(model);
     }
 
     @PostMapping("/deleteGoal")
     public String deleteGoal(@RequestParam("goalId") int goalId,
                              Model model) {
-        fg.deleteGoal(goalId);
+        ResponseEntity<String> response = fg.deleteGoal(goalId);
+        if (response.getStatusCode() == HttpStatus.BAD_REQUEST)
+            model.addAttribute("error", "Unable to delete goal, please try later");
         return showFinancialGoalsPage(model);
     }
 
