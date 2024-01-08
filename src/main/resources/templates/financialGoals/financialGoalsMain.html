@@ -34,6 +34,9 @@
 </div>
 <br>
 <button onclick="window.location.href='/mainPage'">Go back to main page</button>
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
 <div class="container">
     <!-- Left Section: Display Goals List -->
     <div class="goals-list">
@@ -63,7 +66,7 @@
                 <td>
                     <!-- Add your edit and delete buttons here -->
                     <!-- Example Edit Button -->
-                    <form action="/editGoal" method="post">
+                    <form action="/editGoal" method="get">
                         <input type="hidden" name="goalId" th:value="${goal.goalId}"/>
                         <button type="submit" class="btn btn-primary btn-sm">Edit</button>
                     </form>

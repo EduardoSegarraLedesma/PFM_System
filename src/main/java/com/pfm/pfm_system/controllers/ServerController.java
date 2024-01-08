@@ -1,7 +1,9 @@
 package com.pfm.pfm_system.controllers;
 
+import Data.Budget.FinancialGoal;
 import Data.Investment.Sell;
 import Data.User;
+import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -218,8 +221,12 @@ public class ServerController {
                              @RequestParam("startDate") Date startDate,
                              @RequestParam("endDate") Date endDate,
                              Model model) {
-        fg.createGoal(0, db.getUser().getPersonalID(), description,
-                targetAmount, currentAmount, startDate, endDate);
+        //fg.createGoal(0, db.getUser().getPersonalID(), description,
+        //targetAmount, currentAmount, startDate, endDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        FinancialGoal fgoal = new FinancialGoal(0, db.getUser().getPersonalID(), description, targetAmount,
+                currentAmount, dateFormat.format(startDate), dateFormat.format(endDate));
+        model.addAttribute("error", new Gson().toJson(fgoal));
         return showFinancialGoalsPage(model);
     }
 
