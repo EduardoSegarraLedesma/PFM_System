@@ -19,7 +19,6 @@ import java.util.List;
 public class ServerController {
     private final PersistenceController db = PersistenceController.getInstance();
     private final InvestmentController inv = InvestmentController.getInstance();
-
     private final FinancialGoalsController fg = FinancialGoalsController.getInstance();
 
     // ------------------------ Home Page ------------------------ //
@@ -98,7 +97,7 @@ public class ServerController {
         return "recoverPassword.html";
     }
 
-    // ------------------------ Hub ------------------------ //
+    // ------------------------ Hub + User Management ------------------------ //
     @GetMapping("/mainPage")
     public String showMainPage(Model model) {
         model.addAttribute("user", db.getUser());
@@ -222,9 +221,7 @@ public class ServerController {
                 targetAmount, currentAmount, startDate, endDate);
         if (response.getStatusCode() == HttpStatus.BAD_REQUEST)
             model.addAttribute("error", "Unable to create goal, please try later");
-        model.addAttribute("userName", db.getUser().getUserName());
-        model.addAttribute("goals", fg.obtainGoals(db.getUser().getPersonalID()));
-        return "financialGoals/financialGoalsMain.html";
+        return showFinancialGoalsPage(model);
     }
 
     @GetMapping("/editGoal")
