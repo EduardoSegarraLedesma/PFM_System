@@ -218,14 +218,13 @@ public class ServerController {
     public String createGoal(@RequestParam("description") String description,
                              @RequestParam("targetAmount") BigDecimal targetAmount,
                              @RequestParam("currentAmount") BigDecimal currentAmount,
-                             @RequestParam("startDate") Date startDate,
-                             @RequestParam("endDate") Date endDate,
+                             @RequestParam("startDate") String startDate,
+                             @RequestParam("endDate") String endDate,
                              Model model) {
         //fg.createGoal(0, db.getUser().getPersonalID(), description,
         //targetAmount, currentAmount, startDate, endDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         FinancialGoal fgoal = new FinancialGoal(0, db.getUser().getPersonalID(), description, targetAmount,
-                currentAmount, dateFormat.format(startDate), dateFormat.format(endDate));
+                currentAmount, startDate, endDate);
         model.addAttribute("error", new Gson().toJson(fgoal));
         return showFinancialGoalsPage(model);
     }
