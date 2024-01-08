@@ -140,6 +140,7 @@ public class ServerController {
     public String deleteAccount(Model model) {
         try {
             inv.deleteUser(db.getUser().getPersonalID());
+            fg.deleteAll(db.getUser().getPersonalID());
             db.deleteAccount();
             return showIndexPage();
         } catch (SQLException e) {

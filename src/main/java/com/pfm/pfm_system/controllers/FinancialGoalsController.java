@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FinancialGoalsController {
@@ -31,7 +32,7 @@ public class FinancialGoalsController {
     public void createGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            Date startDate, Date endDate) {
-        String restPoint = "";
+        String restPoint = "/insertGoal";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
         PostString(restPoint, new Gson().toJson(fgoal));
     }
@@ -39,24 +40,31 @@ public class FinancialGoalsController {
     public void updateGoal(Integer goalId, String userId, String description,
                            BigDecimal targetAmount, BigDecimal currentAmount,
                            Date startDate, Date endDate) {
-        String restPoint = "";
+        String restPoint = "/editGoal";
         FinancialGoal fgoal = new FinancialGoal(goalId, userId, description, targetAmount, currentAmount, startDate, endDate);
         PostString(restPoint, new Gson().toJson(fgoal));
     }
 
     public void deleteGoal(Integer goalId, String userId) {
-        String restPoint = "";
-        FinancialGoal fgoal = new FinancialGoal(goalId, userId, null, null, null, null, null);
-        PostString(restPoint, new Gson().toJson(fgoal));
+        String restPoint = "/deleteGoal";
+        List<String> IdList = new LinkedList<>();
+        IdList.add(goalId.toString());
+        IdList.add(userId);
+        PostString(restPoint, new Gson().toJson(IdList));
+    }
+
+    public void deleteAll(String userId) {
+        String restPoint = "/deleteAll";
+        PostString(restPoint, userId);
     }
 
     public List<FinancialGoal> obtainGoals(String userId) {
-        String restPoint = "";
+        String restPoint = "/getGoals/{userId}";
         Type GoalsList = new TypeToken<ArrayList<FinancialGoal>>() {
         }.getType();
-        //ResponseEntity<String> response = GetStringForString(restPoint, userId);
+        ResponseEntity<String> response = GetStringForString(restPoint, userId);
         //Data for testing
-        String response =
+        /*String response =
                         """
                         [
                             {
@@ -88,7 +96,8 @@ public class FinancialGoalsController {
                             }
                         ]
                         """;
-        return new Gson().fromJson(response, GoalsList);
+         */
+        return new Gson().fromJson(response.getBody(), GoalsList);
     }
 
     // ----------------- SUPPORT METHODS ----------------- //
